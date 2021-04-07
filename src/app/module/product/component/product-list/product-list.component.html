@@ -1,0 +1,56 @@
+<div class="verification-form float-right">
+  <button class="ant-btn" nz-button type="submit" (click)="toCreatePage($event)">
+    <i nz-icon nzType="plus" nzTheme="outline"></i> Create new
+  </button>
+</div>
+
+<nz-table #productTable
+          nzShowPagination
+          (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
+          [nzLoading]="loading"
+          [nzPageSize]="pageSize"
+          [nzPageIndex]="pageIndex"
+          nzSize="small"
+          nzTitle="Product List"
+          [nzData]="products">
+  <thead>
+  <tr>
+    <th
+      [nzSelections]="listOfSelection"
+      [(nzChecked)]="checked"
+      [nzIndeterminate]="indeterminate"
+      (nzCheckedChange)="onAllChecked($event)"></th>
+    <th nzColumnKey="id" nzWidth="30px">#ID</th>
+    <th nzColumnKey="name" nzWidth="150px" [nzSortFn]="sortFnName" nzCustomFilter>Name</th>
+    <th nzColumnKey="createdAt" nzWidth="100px">Created At</th>
+    <th nzWidth="300px">Image</th>
+    <th nzWidth="50px">Action</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let data of productTable.data; index as i">
+    <td [nzChecked]="setOfCheckedId.has(data.id)" (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
+    <td>{{data.id}}</td>
+    <td>{{data.name}}</td>
+    <td>{{secondsToDateTime(data.createdAt.seconds)}}</td>
+    <td>
+      <ng-container *ngIf="data.images">
+        <ng-container *ngFor="let image of data.images; let i = index">
+          <img [src]="image" [alt]="data.name" class="img-thumbnail m-1 img-product" [width]="getSize(data.images)">
+          <ng-container *ngIf="(i + 1) % 4 === 0"><br></ng-container>
+        </ng-container>
+      </ng-container>
+    </td>
+    <td>
+      <button nz-button nzType="link" [nzSize]="size" nzShape="circle" class="vertical-align-unset lh-50">
+        <i nz-icon nzType="edit" nzTheme="outline"></i>
+      </button>
+      <nz-divider nzType="vertical" style="height: 24px;"></nz-divider>
+      <button nz-button nzType="link" [nzSize]="size" nzDanger nzShape="circle" class="vertical-align-unset lh-50"
+              (click)="deleteProduct(data.id, data.name)">
+        <i nz-icon nzType="delete"></i>
+      </button>
+    </td>
+  </tr>
+  </tbody>
+</nz-table>
