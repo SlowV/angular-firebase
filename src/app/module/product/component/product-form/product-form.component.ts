@@ -1,9 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Product} from '../../../../core/model/product';
 import {ProductService} from '../../../../core/serivce/product.service';
 import firebase from 'firebase/app';
 import {NzMessageService} from 'ng-zorro-antd/message';
-import {AngularFireUploadTask} from '@angular/fire/storage';
 import UploadTaskSnapshot = firebase.storage.UploadTaskSnapshot;
 
 @Component({
@@ -16,6 +15,9 @@ export class ProductFormComponent implements OnInit {
   submitted = false;
   imagesFile: File[] = [];
   isUploading = false;
+  isUploadImagesDone = false;
+  @ViewChild('file')
+  file: HTMLInputElement;
 
   constructor(
     private productService: ProductService,
@@ -42,10 +44,9 @@ export class ProductFormComponent implements OnInit {
     const tasks = files.map(async (file) => {
       const task = await this.productService.uploadImage(file);
       console.log('INSIDE ', 'task upload Image');
-      task.ref.getDownloadURL().then(url => {
-        this.product.images.push(url);
+      return task.ref.getDownloadURL().then(url => {
+        return url;
       });
-      return task;
     });
     return await Promise.all(tasks);
   }
@@ -57,12 +58,16 @@ export class ProductFormComponent implements OnInit {
     console.log('PRODUCT\n', this.product);
 
     await this.uploadFiles(this.imagesFile).then(async (value) => {
-      console.log('END \n', 'task upload Image');
-      const productPromise = Promise.all([this.productService.save(this.product)]);
-      productPromise.then((productDocRef) => {
+      console.log('END ', 'task upload Image');
+      this.product.images = value;
+      this.productService.save(this.product).then(() => {
         this.message.success(`Thêm sản phẩm ${this.product.name} phẩm thành công!`);
+        this.product = new Product();
+        this.imagesFile = [];
+        this.submitted = false;
+        this.file.files = null;
+        console.log('PRODUCT AFTER Store \n', this.product);
       });
-      console.log('PRODUCT AFTER Store \n', this.product);
     });
   }
 

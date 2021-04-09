@@ -7,7 +7,7 @@ import {en_US} from 'ng-zorro-antd/i18n';
 import {registerLocaleData} from '@angular/common';
 import en from '@angular/common/locales/en';
 import {FormsModule} from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {environment} from '../environments/environment';
 import {AngularFireModule} from '@angular/fire';
@@ -15,10 +15,8 @@ import {AngularFirestoreModule} from '@angular/fire/firestore';
 import {CoreModule} from './core/core.module';
 import {AppRoutingModule} from './app-routing.module';
 import {IconsProviderModule} from './icons-provider.module';
-import {AngularFireStorageModule,
-  AngularFireStorageReference,
-  AngularFireUploadTask
-  } from '@angular/fire/storage';
+import {AngularFireStorageModule} from '@angular/fire/storage';
+import {Spinner} from './core/filter/spinner.interceptor';
 
 registerLocaleData(en);
 
@@ -40,6 +38,7 @@ registerLocaleData(en);
   ],
   providers: [
     {provide: NZ_I18N, useValue: en_US},
+    {provide: HTTP_INTERCEPTORS, useClass: Spinner, multi: true}
   ],
   bootstrap: [AppComponent]
 })

@@ -35,15 +35,15 @@
     <td>{{secondsToDateTime(data.createdAt.seconds)}}</td>
     <td>
       <ng-container *ngIf="data.images">
-        <ng-container *ngFor="let image of data.images; let i = index">
-          <img [src]="image" [alt]="data.name" class="img-thumbnail m-1 img-product" [width]="getSize(data.images)">
+        <ng-container *ngFor="let img of data.images; let i = index">
+          <img [src]="img" [alt]="data.name" class="img-thumbnail m-1 img-product" [width]="getSize(data.images)">
           <ng-container *ngIf="(i + 1) % 4 === 0"><br></ng-container>
         </ng-container>
       </ng-container>
     </td>
     <td>
-      <button nz-button nzType="link" [nzSize]="size" nzShape="circle" class="vertical-align-unset lh-50">
-        <i nz-icon nzType="edit" nzTheme="outline"></i>
+      <button nz-button nzType="link" [nzSize]="size" (click)="toDetail($event, data.id)" nzShape="circle" class="vertical-align-unset lh-50">
+        <i nz-icon nzType="eye" nzTheme="outline"></i>
       </button>
       <nz-divider nzType="vertical" style="height: 24px;"></nz-divider>
       <button nz-button nzType="link" [nzSize]="size" nzDanger nzShape="circle" class="vertical-align-unset lh-50"

@@ -27,14 +27,7 @@ export class ProductService {
   }
 
   getById(id: string): Observable<Product> {
-    return this.productRef.doc<Product>().valueChanges().pipe(
-      map(product => {
-        return {
-          ...product,
-          id
-        } as Product;
-      })
-    );
+    return this.productRef.doc<Product>(id).valueChanges();
   }
 
   update(key: string, product: Product): Promise<void> {
@@ -45,9 +38,9 @@ export class ProductService {
     return this.productRef.doc(key).delete();
   }
 
-  async save(product: Product): Promise<DocumentReference<Product>> {
+  save(product: Product): Promise<DocumentReference<Product>> {
     console.log('SERVICE', product);
-    return await this.productRef.add({...product});
+    return this.productRef.add({...product});
   }
 
   async uploadImage(file: File): Promise<AngularFireUploadTask> {

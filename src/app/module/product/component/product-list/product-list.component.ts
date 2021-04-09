@@ -131,6 +131,6 @@ export class ProductListComponent implements OnInit, AfterViewInit {
 
   toDetail($event: Event, id: string): void {
     $event.stopPropagation();
-    this.router.navigate(['product', 'detail', id]);
+    this.router.navigate(['admin/product', 'detail', id]);
   }
 }
