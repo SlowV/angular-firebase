@@ -19,11 +19,11 @@
       [nzSelections]="listOfSelection"
       [(nzChecked)]="checked"
       [nzIndeterminate]="indeterminate"
-      (nzCheckedChange)="onAllChecked($event)"></th>
-    <th nzColumnKey="id" nzWidth="30px">#ID</th>
+      (nzCheckedChange)="onAllChecked($event)" nzWidth="30px"></th>
+    <th nzColumnKey="id" nzWidth="100px">#ID</th>
     <th nzColumnKey="name" nzWidth="150px" [nzSortFn]="sortFnName" nzCustomFilter>Name</th>
     <th nzColumnKey="createdAt" nzWidth="100px">Created At</th>
-    <th nzWidth="300px">Image</th>
+    <th nzWidth="250px">Image</th>
     <th nzWidth="50px">Action</th>
   </tr>
   </thead>

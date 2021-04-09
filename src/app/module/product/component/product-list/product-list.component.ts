@@ -113,6 +113,7 @@ export class ProductListComponent implements OnInit, AfterViewInit {
   }
 
   toCreatePage($event: Event, newTab: boolean = false): void {
+    $event.stopPropagation();
     if (newTab) {
       window.open(this.router.url + '/create');
     } else {
@@ -126,5 +127,10 @@ export class ProductListComponent implements OnInit, AfterViewInit {
       size = 60;
     }
     return size;
+  }
+
+  toDetail($event: Event, id: string): void {
+    $event.stopPropagation();
+    this.router.navigate(['product', 'detail', id]);
   }
 }

@@ -3,6 +3,8 @@ import {Product} from '../../../../core/model/product';
 import {ProductService} from '../../../../core/serivce/product.service';
 import firebase from 'firebase/app';
 import {NzMessageService} from 'ng-zorro-antd/message';
+import {AngularFireUploadTask} from '@angular/fire/storage';
+import UploadTaskSnapshot = firebase.storage.UploadTaskSnapshot;
 
 @Component({
   selector: 'app-product-form',
@@ -12,32 +14,56 @@ import {NzMessageService} from 'ng-zorro-antd/message';
 export class ProductFormComponent implements OnInit {
   product: Product = new Product();
   submitted = false;
-  images: string[] = [];
+  imagesFile: File[] = [];
+  isUploading = false;
 
   constructor(
     private productService: ProductService,
-    private message: NzMessageService) {
+    private message: NzMessageService,
+  ) {
   }
 
   ngOnInit(): void {
   }
 
-  newCustomer(): void {
+  newProduct(): void {
     this.submitted = false;
     this.product = new Product();
   }
 
-  save(): void {
+  async save(): Promise<void> {
+    this.isUploading = true;
     this.product.createdAt = firebase.firestore.Timestamp.fromDate(new Date());
-    this.images = this.cleanArrays(this.images);
-    this.product.images = this.images;
-    console.log(this.product);
-    this.productService.save(this.product)
-      .then(() => {
-        this.message.success(`Thêm sản ${this.product.name} phẩm thành công!`);;
-      })
-      .catch(err => console.log(err));
-    this.product = new Product();
+    await this.pushImagesToProduct();
+  }
+
+  async uploadFiles(files: File[]): Promise<UploadTaskSnapshot[]> {
+    console.log('START ', 'task upload Image');
+    const tasks = files.map(async (file) => {
+      const task = await this.productService.uploadImage(file);
+      console.log('INSIDE ', 'task upload Image');
+      task.ref.getDownloadURL().then(url => {
+        this.product.images.push(url);
+      });
+      return task;
+    });
+    return await Promise.all(tasks);
+  }
+
+  async pushImagesToProduct(): Promise<void> {
+    this.imagesFile = this.cleanArrays(this.imagesFile);
+
+    console.log('PRODUCT IMAGES \n', this.product.images);
+    console.log('PRODUCT\n', this.product);
+
+    await this.uploadFiles(this.imagesFile).then(async (value) => {
+      console.log('END \n', 'task upload Image');
+      const productPromise = Promise.all([this.productService.save(this.product)]);
+      productPromise.then((productDocRef) => {
+        this.message.success(`Thêm sản phẩm ${this.product.name} phẩm thành công!`);
+      });
+      console.log('PRODUCT AFTER Store \n', this.product);
+    });
   }
 
   onSubmit(): void {
@@ -45,14 +71,7 @@ export class ProductFormComponent implements OnInit {
     this.save();
   }
 
-  addImage(): void {
-    this.images.push('');
-    this.images.forEach(value => {
-      console.log(value);
-    });
-  }
-
-  cleanArrays(arr: any[]): any[] {
+  cleanArrays(arr: File[]): File[] {
     const propNames = Object.getOwnPropertyNames(arr);
     // tslint:disable-next-line:prefer-for-of
     for (let i = 0; i < propNames.length; i++) {
@@ -65,7 +84,13 @@ export class ProductFormComponent implements OnInit {
     return arr;
   }
 
-  trackByIdx(index: number, obj: any): any {
-    return index;
+  onFileSelected($event): void {
+    // const v = 'đảo chiểu mùa thu.png';
+    // console.log(v);
+    this.imagesFile = [];
+    const files = $event.target.files;
+    for (const file of files) {
+      this.imagesFile.push(file);
+    }
   }
 }

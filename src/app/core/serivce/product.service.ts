@@ -4,18 +4,20 @@ import {Observable} from 'rxjs';
 import {Product} from '../model/product';
 import {map} from 'rxjs/operators';
 import firebase from 'firebase';
+import {AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask} from '@angular/fire/storage';
 import DocumentReference = firebase.firestore.DocumentReference;
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
-  private readonly dbPath = '/product';
+  private readonly path = '/product';
 
   productRef: AngularFirestoreCollection<Product> = null;
+  storageRef: AngularFireStorageReference = null;
 
-  constructor(private afs: AngularFirestore) {
-    this.productRef = afs.collection(this.dbPath, ref => ref.orderBy('createdAt', 'desc'));
+  constructor(private afs: AngularFirestore, private storage: AngularFireStorage) {
+    this.productRef = afs.collection(this.path, ref => ref.orderBy('createdAt', 'desc'));
   }
 
   getAll(): Observable<Product[]> {
@@ -43,8 +45,18 @@ export class ProductService {
     return this.productRef.doc(key).delete();
   }
 
-  save(product: Product): Promise<DocumentReference<Product>> {
-    return this.productRef.add({...product});
+  async save(product: Product): Promise<DocumentReference<Product>> {
+    console.log('SERVICE', product);
+    return await this.productRef.add({...product});
+  }
+
+  async uploadImage(file: File): Promise<AngularFireUploadTask> {
+    this.storageRef = this.storage.ref(`${this.path}/${Date.now()}`);
+    return this.storageRef.put(file).snapshotChanges().toPromise();
+  }
+
+  getStorageRef(): AngularFireStorageReference {
+    return this.storageRef;
   }
 
 }
