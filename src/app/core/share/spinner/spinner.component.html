@@ -1,0 +1,14 @@
+<div class="spinner-containner" [ngStyle]="{'display': isSpinning ? 'flex' : 'none'}">
+  <!-- <nz-spin [nzSpinning]="isSpinning" nzTip="Loading..." ></nz-spin> -->
+  <ng-template #indicatorTemplate>
+    <i nz-icon nzType="loading"></i>
+  </ng-template>
+
+  <nz-spin
+    nzSimple
+    [nzIndicator]="indicatorTemplate"
+    nzSize="large"
+  ></nz-spin>
+
+</div>
+
