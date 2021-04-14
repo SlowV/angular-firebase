@@ -1,0 +1,57 @@
+$c_name: #454545;
+
+p {
+  margin: 0;
+}
+
+input{
+  &:disabled{
+    background: #fff;
+    color: $c_name;
+    border: none;
+    cursor: default;
+  }
+}
+:host ::ng-deep {
+  .ant-input-number-input {
+    &:disabled{
+      background: #fff;
+      color: $c_name;
+      border: none;
+      cursor: default;
+    }
+  }
+
+  [nz-button] {
+    i {
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+  .ck-editor__editable_inline {
+
+    min-height: 300px;
+    border: 1px solid #8d8d8d;
+  }
+  .ck-editor__editable_inline[contenteditable="false"] {
+    border: none
+  }
+
+}
+
+nz-button-group [nz-button] {
+  margin-right: 0;
+}
+
+.close-img {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: linear-gradient(120deg, #fd6d75, #c61c26) !important;
+}
+
+.btn-hover:hover {
+  box-shadow: 1px 3px 5px #a5a5a5;
+}
+

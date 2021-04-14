@@ -45,7 +45,6 @@ export class ProductListComponent implements OnInit, AfterViewInit {
   setOfCheckedId = new Set<string>();
   listOfCurrentPageData: ReadonlyArray<Product> = [];
   sortFnName = (a: Product, b: Product) => a.name.localeCompare(b.name);
-  sortFnDate = (a: Product, b: Product) => a.createdAt.toLocaleString(b.createdAt.toLocaleString());
 
   constructor(
     private productService: ProductService,
@@ -55,12 +54,6 @@ export class ProductListComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
   }
-
-  secondsToDateTime(unixTimestamp): any {
-    const milliseconds = unixTimestamp * 1000;
-    return new Date(milliseconds).toLocaleString();
-  }
-
   ngAfterViewInit(): void {
     this.loadProducts();
   }
@@ -117,7 +110,7 @@ export class ProductListComponent implements OnInit, AfterViewInit {
     if (newTab) {
       window.open(this.router.url + '/create');
     } else {
-      this.router.navigate(['product', 'create']);
+      this.router.navigate(['admin/product', 'create']);
     }
   }
 

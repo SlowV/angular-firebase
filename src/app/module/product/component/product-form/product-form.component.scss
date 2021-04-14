@@ -1,0 +1,13 @@
+.close-img {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: linear-gradient(120deg, #fd6d75, #c61c26) !important;
+}
+
+:host ::ng-deep {
+  .ck-editor__editable_inline {
+    min-height: 300px;
+    border: 1px solid #8d8d8d;
+  }
+}

@@ -1,6 +1,6 @@
 <div class="verification-form float-right">
   <button class="ant-btn" nz-button type="submit" (click)="toCreatePage($event)">
-    <i nz-icon nzType="plus" nzTheme="outline"></i> Create new
+    <i nz-icon nzType="plus" nzTheme="outline" class="d-inline-flex"></i> Create new
   </button>
 </div>
 
@@ -20,23 +20,25 @@
       [(nzChecked)]="checked"
       [nzIndeterminate]="indeterminate"
       (nzCheckedChange)="onAllChecked($event)" nzWidth="30px"></th>
-    <th nzColumnKey="id" nzWidth="100px">#ID</th>
-    <th nzColumnKey="name" nzWidth="150px" [nzSortFn]="sortFnName" nzCustomFilter>Name</th>
-    <th nzColumnKey="createdAt" nzWidth="100px">Created At</th>
-    <th nzWidth="250px">Image</th>
-    <th nzWidth="50px">Action</th>
+    <th nzColumnKey="id" nzWidth="50px">#ID</th>
+    <th nzColumnKey="sku" nzWidth="70px">SKU</th>
+    <th nzColumnKey="name" nzWidth="200px" [nzSortFn]="sortFnName" nzCustomFilter>Name</th>
+    <th nzColumnKey="createdAt" nzWidth="150px">Created At</th>
+    <th nzWidth="300px">Image</th>
+    <th nzWidth="70px">Action</th>
   </tr>
   </thead>
   <tbody>
   <tr *ngFor="let data of productTable.data; index as i">
     <td [nzChecked]="setOfCheckedId.has(data.id)" (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
     <td>{{data.id}}</td>
+    <td>{{data.sku}}</td>
     <td>{{data.name}}</td>
-    <td>{{secondsToDateTime(data.createdAt.seconds)}}</td>
+    <td>{{data.createdAt.seconds | dateTime}}</td>
     <td>
       <ng-container *ngIf="data.images">
         <ng-container *ngFor="let img of data.images; let i = index">
-          <img [src]="img" [alt]="data.name" class="img-thumbnail m-1 img-product" [width]="getSize(data.images)">
+          <img [src]="img.url" [alt]="data.name" class="img-thumbnail m-1 img-product" [width]="getSize(data.images)">
           <ng-container *ngIf="(i + 1) % 4 === 0"><br></ng-container>
         </ng-container>
       </ng-container>

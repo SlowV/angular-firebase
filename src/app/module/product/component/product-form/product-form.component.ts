@@ -3,7 +3,7 @@ import {Product} from '../../../../core/model/product';
 import {ProductService} from '../../../../core/serivce/product.service';
 import firebase from 'firebase/app';
 import {NzMessageService} from 'ng-zorro-antd/message';
-import UploadTaskSnapshot = firebase.storage.UploadTaskSnapshot;
+import * as DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 
 @Component({
   selector: 'app-product-form',
@@ -18,6 +18,12 @@ export class ProductFormComponent implements OnInit {
   isUploadImagesDone = false;
   @ViewChild('file')
   file: HTMLInputElement;
+  countFileSelected = 0;
+  arrImageLocal = [];
+  Editor = DecoupledEditor;
+  config = {
+    placeholder: 'Nhập lội dung cho sản phẩm ...'
+  };
 
   constructor(
     private productService: ProductService,
@@ -39,25 +45,13 @@ export class ProductFormComponent implements OnInit {
     await this.pushImagesToProduct();
   }
 
-  async uploadFiles(files: File[]): Promise<UploadTaskSnapshot[]> {
-    console.log('START ', 'task upload Image');
-    const tasks = files.map(async (file) => {
-      const task = await this.productService.uploadImage(file);
-      console.log('INSIDE ', 'task upload Image');
-      return task.ref.getDownloadURL().then(url => {
-        return url;
-      });
-    });
-    return await Promise.all(tasks);
-  }
-
   async pushImagesToProduct(): Promise<void> {
     this.imagesFile = this.cleanArrays(this.imagesFile);
 
     console.log('PRODUCT IMAGES \n', this.product.images);
     console.log('PRODUCT\n', this.product);
 
-    await this.uploadFiles(this.imagesFile).then(async (value) => {
+    await this.productService.uploadFiles(this.imagesFile).then(async (value) => {
       console.log('END ', 'task upload Image');
       this.product.images = value;
       this.productService.save(this.product).then(() => {
@@ -65,15 +59,14 @@ export class ProductFormComponent implements OnInit {
         this.product = new Product();
         this.imagesFile = [];
         this.submitted = false;
-        this.file.files = null;
+        this.resetFrom();
         console.log('PRODUCT AFTER Store \n', this.product);
       });
     });
   }
 
-  onSubmit(): void {
-    this.submitted = true;
-    this.save();
+  resetFrom(): void {
+    this.file.value = null;
   }
 
   cleanArrays(arr: File[]): File[] {
@@ -89,13 +82,47 @@ export class ProductFormComponent implements OnInit {
     return arr;
   }
 
-  onFileSelected($event): void {
-    // const v = 'đảo chiểu mùa thu.png';
-    // console.log(v);
+  onFileSelected($event, input: HTMLInputElement): void {
+    event.preventDefault();
     this.imagesFile = [];
-    const files = $event.target.files;
-    for (const file of files) {
-      this.imagesFile.push(file);
+    this.arrImageLocal = [];
+    const validImageTypes = ['image/gif', 'image/jpeg', 'image/png'];
+    // @ts-ignore
+    for (const file of input.files) {
+      const fileType = file.type;
+      if (!validImageTypes.includes(fileType)) {
+        this.message.error('Image type invalid!', {
+          nzAnimate: true,
+          nzDuration: 1000,
+          nzPauseOnHover: false
+        });
+        this.resetFrom();
+        return;
+      }
+
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (events: ProgressEvent<FileReader>) => {
+          this.arrImageLocal.push(events.target.result);
+          this.imagesFile.push(file);
+        };
+        reader.readAsDataURL(file);
+      }
     }
+    this.countFileSelected = input.files.length;
+    this.resetFrom();
+  }
+
+  removeImgNew(i: number): void {
+    this.arrImageLocal.splice(i, 1);
+    this.imagesFile.splice(i, 1);
+    this.countFileSelected = this.imagesFile.length;
+  }
+
+  onReady(editor): void {
+    editor.ui.getEditableElement().parentElement.insertBefore(
+      editor.ui.view.toolbar.element,
+      editor.ui.getEditableElement()
+    );
   }
 }
