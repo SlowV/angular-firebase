@@ -66,7 +66,7 @@ export class AuthService {
   // Sign up with email/password
   signUp(user: User, password): Promise<void> {
     return this.afAuth.createUserWithEmailAndPassword(user.email, password)
-      .then((result) => {
+      .then((result: UserCredential) => {
         user.uid = result.user.uid;
         this.sendVerificationMail();
         this.setUserData(result.user).then();
