@@ -1,18 +1,24 @@
 import {Injectable, NgZone} from '@angular/core';
-import {AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument} from '@angular/fire/firestore';
+import {
+  AngularFirestore,
+  AngularFirestoreCollection,
+  AngularFirestoreDocument,
+  QueryDocumentSnapshot,
+  QuerySnapshot
+} from '@angular/fire/firestore';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {Router} from '@angular/router';
 import {User} from '../model/user';
 import {Subscription} from 'rxjs';
 import firebase from 'firebase';
 import auth = firebase.auth;
-import {first} from 'rxjs/operators';
+import UserCredential = firebase.auth.UserCredential;
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  userData: any;
+  userData: User;
   useRef: AngularFirestoreCollection;
   private path = '/users';
 
@@ -27,33 +33,28 @@ export class AuthService {
     logged in and setting up null when logged out */
     this.afAuth.authState.subscribe((user) => {
       if (user) {
-        this.getUserByUid(user.uid).then(async () => this.saveUserLocalStore(this.userData));
+        this.afs.collection<User>(this.path, ref => ref.where('uid', '==', user.uid))
+          .get()
+          .toPromise()
+          .then((value: QuerySnapshot<User>) => {
+            value.forEach((result: QueryDocumentSnapshot<User>) => {
+              this.userData = result.data();
+              this.userData.role = [];
+              localStorage.setItem('user', JSON.stringify(this.userData));
+            });
+          });
       } else {
         localStorage.setItem('user', null);
       }
     });
   }
 
-  saveUserLocalStore(user: User): void {
-    localStorage.setItem('user', JSON.stringify(user));
-  }
-
-  async getUserByUid(uid: string): Promise<void> {
-    this.afs.collection<User>(this.path, ref => ref.where('uid', '==', uid)).get().toPromise()
-      .then((value) => {
-        value.forEach((result) => {
-          this.userData = result.data();
-          return this.userData;
-        });
-      });
-  }
-
   // Sign in with email/password
   signIn(email, password): Promise<void> {
     return this.afAuth.signInWithEmailAndPassword(email, password)
-      .then((result) => {
+      .then((result: UserCredential) => {
         this.ngZone.run(() => {
-          this.router.navigate(['admin/welcome']);
+          this.router.navigate(['admin/welcome']).then();
         });
         localStorage.setItem('user', JSON.stringify(result.user));
         this.getUSerData(result.user.uid);
@@ -68,7 +69,7 @@ export class AuthService {
       .then((result) => {
         user.uid = result.user.uid;
         this.sendVerificationMail();
-        this.setUserData(result.user);
+        this.setUserData(result.user).then();
         console.log('UPDATE user', user);
       }).catch((error) => {
         console.log(error.message);
@@ -79,7 +80,7 @@ export class AuthService {
   sendVerificationMail(): Subscription {
     return this.afAuth.user.subscribe((user) => {
       user.sendEmailVerification().then(() => {
-        this.router.navigate(['admin/auth', 'verify-email']);
+        this.router.navigate(['admin/auth', 'verify-email']).then();
       });
     });
   }
@@ -94,7 +95,7 @@ export class AuthService {
       });
   }
 
-  // Returns true when user is looged in and email is verified
+  // Returns true when user is logged in and email is verified
   get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem('user'));
     console.log(user);
@@ -132,9 +133,9 @@ export class AuthService {
     return this.afAuth.signInWithPopup(provider)
       .then((result) => {
         this.ngZone.run(() => {
-          this.router.navigate(['admin/welcome']);
+          this.router.navigate(['admin/welcome']).then();
         });
-        this.setUserData(result.user);
+        this.setUserData(result.user).then();
       }).catch((error) => {
         console.log(error);
       });
@@ -144,7 +145,7 @@ export class AuthService {
   signOut(): Promise<void> {
     return this.afAuth.signOut().then(() => {
       localStorage.removeItem('user');
-      this.router.navigate(['admin/auth']);
+      this.router.navigate(['admin/auth']).then();
     });
   }
 }

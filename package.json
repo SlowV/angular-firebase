@@ -27,6 +27,7 @@
     "firebase": "^7.0 || ^8.0",
     "jquery": "^3.6.0",
     "lodash": "^4.17.21",
+    "ng-lazyload-image": "^9.1.0",
     "ng-zorro-antd": "^11.3.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",

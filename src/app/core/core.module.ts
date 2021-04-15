@@ -1,6 +1,6 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {RouterModule} from '@angular/router';
 import {NzAffixModule} from 'ng-zorro-antd/affix';
 import {NzAutocompleteModule} from 'ng-zorro-antd/auto-complete';
 import {NzCalendarModule} from 'ng-zorro-antd/calendar';
@@ -14,7 +14,7 @@ import {NzAlertModule} from 'ng-zorro-antd/alert';
 import {NzCardModule} from 'ng-zorro-antd/card';
 
 // ngx-translate
-import { TranslateModule } from '@ngx-translate/core';
+import {TranslateModule} from '@ngx-translate/core';
 import {NzCarouselModule} from 'ng-zorro-antd/carousel';
 import {NzCascaderModule} from 'ng-zorro-antd/cascader';
 import {NzCheckboxModule} from 'ng-zorro-antd/checkbox';
@@ -71,13 +71,13 @@ import {NzInputModule} from 'ng-zorro-antd/input';
 import {NzGridModule} from 'ng-zorro-antd/grid';
 import {NzMessageModule} from 'ng-zorro-antd/message';
 import {NzDrawerModule} from 'ng-zorro-antd/drawer';
-import { ImagePipe } from './pipe/image.pipe';
-import { SpinnerComponent } from './share/spinner/spinner.component';
-import { DateTimePipe } from './pipe/date-time.pipe';
+import {SpinnerComponent} from './share/spinner/spinner.component';
+import {DateTimePipe} from './pipe/date-time.pipe';
+import {LazyLoadImageModule} from 'ng-lazyload-image';
 
 
 @NgModule({
-  declarations: [ImagePipe, SpinnerComponent, DateTimePipe],
+  declarations: [SpinnerComponent, DateTimePipe],
   imports: [
     CommonModule,
     RouterModule,
@@ -150,6 +150,7 @@ import { DateTimePipe } from './pipe/date-time.pipe';
     NzWaveModule,
     NzResizableModule,
     NzPipesModule,
+    LazyLoadImageModule
     // ng-zorro-antd
   ],
   exports: [
@@ -222,7 +223,6 @@ import { DateTimePipe } from './pipe/date-time.pipe';
     NzWaveModule,
     NzResizableModule,
     NzPipesModule,
-    ImagePipe,
     DateTimePipe
   ]
 })

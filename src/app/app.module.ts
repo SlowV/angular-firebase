@@ -2,8 +2,7 @@ import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
-import {NZ_I18N} from 'ng-zorro-antd/i18n';
-import {en_US} from 'ng-zorro-antd/i18n';
+import {en_US, NZ_I18N} from 'ng-zorro-antd/i18n';
 import {registerLocaleData} from '@angular/common';
 import en from '@angular/common/locales/en';
 import {FormsModule} from '@angular/forms';
@@ -19,6 +18,7 @@ import {AngularFireStorageModule} from '@angular/fire/storage';
 import {Spinner} from './core/filter/spinner.interceptor';
 import {AngularFireAuthModule} from '@angular/fire/auth';
 import {AuthService} from './core/serivce/auth.service';
+import {LAZYLOAD_IMAGE_HOOKS, ScrollHooks} from 'ng-lazyload-image';
 
 registerLocaleData(en);
 
@@ -42,6 +42,7 @@ registerLocaleData(en);
   providers: [
     {provide: NZ_I18N, useValue: en_US},
     {provide: HTTP_INTERCEPTORS, useClass: Spinner, multi: true},
+    {provide: LAZYLOAD_IMAGE_HOOKS, useClass: ScrollHooks},
     AuthService
   ],
   bootstrap: [AppComponent]

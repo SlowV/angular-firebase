@@ -91,7 +91,7 @@
               <div nz-row>
                 <ng-container *ngFor="let img of product.images; index as i">
                   <div nz-col nzSpan="8" class="text-center">
-                    <img [src]="img.url" [alt]="product.name" class="img-thumbnail m-1 img-product" [width]="125">
+                    <img [lazyLoad]="img.url" [alt]="product.name" class="img-thumbnail m-1 img-product" [width]="125">
                     <button [hidden]="!isEditing" nz-button nzType="primary" nzShape="circle"
                             class="close-img" nzDanger nzSize="small" (click)="removeImageTmp(i)">
                       <i nz-icon nzType="close"></i>
