@@ -6,6 +6,7 @@ import {ProductRoutingModule} from './product-routing.module';
 import {CoreModule} from '../../core/core.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { ProductFormComponent } from './component/product-form/product-form.component';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 
 
@@ -14,6 +15,7 @@ import { ProductFormComponent } from './component/product-form/product-form.comp
   imports: [
     CommonModule,
     ProductRoutingModule,
+    CKEditorModule,
     CoreModule,
     ReactiveFormsModule,
     FormsModule

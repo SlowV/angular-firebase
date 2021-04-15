@@ -1,1 +1,159 @@
-<p>{{product.name}}</p>
+<div style="background: #f5f5f5;padding:30px; " *ngIf="product">
+  <div nz-row>
+    <div nz-col nzSpan="12">
+      <h4 class="text-secondary">Sản phẩm: {{product.name}}</h4>
+    </div>
+    <div nz-col nzSpan="12" class="text-right">
+      <button
+        nz-button nzType="primary"
+        nzSize="small"
+        nz-tooltip
+        nzTooltipTitle="Sửa"
+        nzTooltipPlacement="bottom"
+        class="mx-1 btn-hover"
+        nzShape="circle"
+        (click)="isEditing = !isEditing">
+        <i nz-icon nzType="edit"></i>
+      </button>
+      <button nz-button nzType="primary"
+              nzDanger nzSize="small"
+              nz-tooltip
+              nzTooltipTitle="Xóa"
+              nzTooltipPlacement="bottom"
+              nzShape="circle"
+              class="mx-1 btn-hover">
+        <i nz-icon nzType="delete"></i>
+      </button>
+    </div>
+  </div>
+  <div nz-row>
+    <div nz-col nzSpan="24">
+      <form nz-form class="mt-4">
+        <div nz-row [nzGutter]="8">
+          <div nz-col [nzSpan]="8">
+            <ng-container *ngIf="product">
+              <nz-card nzTitle="Thông tin">
+
+                <nz-form-item class="mb-0">
+                  <nz-form-label [nzSm]="5" [nzXs]="24" class="font-weight-bold">ID</nz-form-label>
+                  <nz-form-control [nzSm]="19" [nzXs]="24">
+                    <input nz-input id="id" [disabled]="true" [value]="id"/>
+                  </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item class="mb-0">
+                  <nz-form-label [nzSm]="5" [nzXs]="24" class="font-weight-bold">SKU</nz-form-label>
+                  <nz-form-control [nzSm]="19" [nzXs]="24">
+                    <input nz-input id="sku" [disabled]="!isEditing" [(ngModel)]="product.sku"
+                           [ngModelOptions]="{standalone: true}"/>
+                  </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item class="mb-0">
+                  <nz-form-label [nzSm]="5" [nzXs]="24" class="font-weight-bold" nzRequired>Tên</nz-form-label>
+                  <nz-form-control [nzSm]="19" [nzXs]="24">
+                    <input nz-input id="name" [disabled]="!isEditing" [(ngModel)]="product.name"
+                           [ngModelOptions]="{standalone: true}"/>
+                  </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item class="mb-0">
+                  <nz-form-label [nzSm]="5" [nzXs]="24" class="font-weight-bold" nzRequired>Giá</nz-form-label>
+                  <nz-form-control [nzSm]="19" [nzXs]="24">
+                    <span [hidden]="isEditing" class="ml-2">
+                      {{product.price | currency: '&nbsp;' : true : '4.0-2' | lowercase }} vnđ
+                    </span>
+                    <nz-input-number
+                      [hidden]="!isEditing"
+                      [style]="!isEditing ? 'border: none' : ''"
+                      class="slv-input"
+                      [disabled]="!isEditing"
+                      [(ngModel)]="product.price"
+                      [ngModelOptions]="{standalone: true}"
+                      [nzMin]="0" [nzStep]="1000"></nz-input-number>
+                  </nz-form-control>
+                </nz-form-item>
+
+                <ng-container *ngIf="product.createdAt">
+                  <nz-form-item class="mb-0">
+                    <nz-form-label [nzSm]="5" [nzXs]="24" class="font-weight-bold" nzFor="createdAt">Ngày tạo
+                    </nz-form-label>
+                    <nz-form-control [nzSm]="19" [nzXs]="24">
+                      <input nz-input id="createdAt" [disabled]="true" [value]="product.createdAt.seconds | dateTime"/>
+                    </nz-form-control>
+                  </nz-form-item>
+                </ng-container>
+              </nz-card>
+            </ng-container>
+          </div>
+          <div nz-col [nzSpan]="8">
+            <nz-card nzTitle="Hình ảnh">
+              <div nz-row>
+                <ng-container *ngFor="let img of product.images; index as i">
+                  <div nz-col nzSpan="8" class="text-center">
+                    <img [src]="img.url" [alt]="product.name" class="img-thumbnail m-1 img-product" [width]="125">
+                    <button [hidden]="!isEditing" nz-button nzType="primary" nzShape="circle"
+                            class="close-img" nzDanger nzSize="small" (click)="removeImageTmp(i)">
+                      <i nz-icon nzType="close"></i>
+                    </button>
+                  </div>
+                </ng-container>
+              </div>
+              <div nz-row>
+                <ng-container *ngFor="let imgNew of arrImageLocal; index as i">
+                  <div nz-col nzSpan="8" class="text-center">
+                    <img [src]="imgNew" [alt]="product.name" class="img-thumbnail m-1 img-product" [width]="125">
+                    <button [hidden]="!isEditing" nz-button nzType="primary" nzShape="circle"
+                            class="close-img" nzDanger nzSize="small" (click)="removeImgNew(i)">
+                      <i nz-icon nzType="close"></i>
+                    </button>
+                  </div>
+                </ng-container>
+              </div>
+              <div nz-row [hidden]="!isEditing">
+                <div nz-col [nzSpan]="24">
+                  <div nz-col nzSpan="8" class="text-center mt-4">
+                    <input type="file" #fileImg class="d-none" (change)="changeFileImg($event, fileImg)" multiple
+                           accept="image/gif, image/jpeg, image/png">
+                    <button nz-button nzType="dashed" style="width: 125px;" (click)="fileImg.click()">
+                      <i nz-icon nzType="plus-circle" nzTheme="outline" class="d-inline-flex"></i> Thêm ảnh
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </nz-card>
+          </div>
+          <div nz-col [nzSpan]="8">
+            <nz-card nzTitle="Sự kiện">
+              <p></p>
+            </nz-card>
+          </div>
+          <div nz-col nzSpan="24">
+            <nz-card nzTitle="Nội dung" class="mt-3">
+              <nz-form-item *ngIf="isEditing === true; else descriptionView">
+                <nz-form-label [nzSm]="4" [nzXs]="24" class="font-weight-bold">Nội dung</nz-form-label>
+                <nz-form-control [nzSm]="16" [nzXs]="24">
+                  <ckeditor [editor]="editor"
+                            [config]="config"
+                            (ready)="onReady($event)"
+                            [(ngModel)]="product.description"
+                            [ngModelOptions]="{standalone: true}"></ckeditor>
+                </nz-form-control>
+              </nz-form-item>
+              <ng-template #descriptionView>
+                <div [innerHTML]="product.description"></div>
+              </ng-template>
+            </nz-card>
+          </div>
+          <div nz-col nzSpan="24" class="text-center mt-5" *ngIf="isEditing">
+            <button nz-button nzType="primary" nzSize="default" (click)="update()" class="mx-1">Lưu</button>
+            <button nz-button nzType="default" nzSize="default" (click)="isEditing = !isEditing" class="mx-1">Hủy
+            </button>
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+</div>

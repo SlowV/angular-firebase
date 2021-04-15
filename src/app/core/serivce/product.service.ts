@@ -6,6 +6,7 @@ import {map} from 'rxjs/operators';
 import firebase from 'firebase';
 import {AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask} from '@angular/fire/storage';
 import DocumentReference = firebase.firestore.DocumentReference;
+import UploadTaskSnapshot = firebase.storage.UploadTaskSnapshot;
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +28,9 @@ export class ProductService {
   }
 
   getById(id: string): Observable<Product> {
-    return this.productRef.doc<Product>(id).valueChanges();
+    return this.productRef.doc<Product>(id).valueChanges({
+      idField: 'id'
+    });
   }
 
   update(key: string, product: Product): Promise<void> {
@@ -43,13 +46,33 @@ export class ProductService {
     return this.productRef.add({...product});
   }
 
-  async uploadImage(file: File): Promise<AngularFireUploadTask> {
+  private async uploadImage(file: File): Promise<AngularFireUploadTask> {
     this.storageRef = this.storage.ref(`${this.path}/${Date.now()}`);
     return this.storageRef.put(file).snapshotChanges().toPromise();
   }
 
   getStorageRef(): AngularFireStorageReference {
     return this.storageRef;
+  }
+
+  deleteImage(fullPath): Observable<any> {
+    this.storageRef = this.storage.ref(fullPath);
+    return this.storageRef.delete();
+  }
+
+  async uploadFiles(files: File[]): Promise<{ name: string, url: string }[]> {
+    console.log('START ', 'task upload Image');
+    const tasks = files.map(async (file) => {
+      const task = await this.uploadImage(file);
+      console.log('INSIDE ', 'task upload Image');
+      return task.ref.getDownloadURL().then(url => {
+        return {
+          name: task.metadata.fullPath,
+          url
+        };
+      });
+    });
+    return await Promise.all(tasks);
   }
 
 }

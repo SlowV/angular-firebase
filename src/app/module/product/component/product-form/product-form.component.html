@@ -1,20 +1,84 @@
-<h3>Create Product</h3>
-<div [hidden]="submitted" style="width: 300px;">
-  <form (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <label for="name">Name</label>
-      <input type="text" class="form-control" id="name" required [(ngModel)]="product.name" name="name">
-    </div>
+<ng-container *ngIf="!submitted">
+  <div nz-row>
+    <div nz-col nzSpan="20" nzXs="24">
+      <h3>Thêm mới sản phẩm</h3>
+      <div nz-row>
+        <div nz-col nzSpan="24">
+          <form nz-form class="mt-4">
+            <nz-form-item class="mb-0">
+              <nz-form-label [nzSm]="4" [nzXs]="24" class="font-weight-bold" nzFor="sku">SKU</nz-form-label>
+              <nz-form-control [nzSm]="16" [nzXs]="24">
+                <input nz-input id="sku" placeholder="Mã SKU sản phẩm" [(ngModel)]="product.sku" [ngModelOptions]="{standalone: true}"/>
+              </nz-form-control>
+            </nz-form-item>
 
-    <div class="form-group">
-      <label>Image</label><br>
-      <input type="file" multiple (change)="onFileSelected($event)" #file autocomplete="off"> <br>
-    </div>
-    <button type="submit" class="btn btn-success">Submit</button>
-  </form>
-</div>
+            <nz-form-item class="mb-0">
+              <nz-form-label [nzSm]="4" [nzXs]="24" class="font-weight-bold" nzFor="name">Tên sản phẩm</nz-form-label>
+              <nz-form-control [nzSm]="16" [nzXs]="24">
+                <input nz-input id="name" placeholder="Tên sản phẩm" [(ngModel)]="product.name" [ngModelOptions]="{standalone: true}"/>
+              </nz-form-control>
+            </nz-form-item>
 
-<div [hidden]="!submitted">
+            <nz-form-item class="mb-0">
+              <nz-form-label [nzSm]="4" [nzXs]="24" class="font-weight-bold" nzFor="price">Giá (vnđ)</nz-form-label>
+              <nz-form-control [nzSm]="16" [nzXs]="24">
+                <input nz-input id="price" [(ngModel)]="product.price" [ngModelOptions]="{standalone: true}"/>
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item class="mb-0 mt-3">
+              <nz-form-label [nzSm]="4" [nzXs]="24" class="font-weight-bold" nzFor="image">Ảnh</nz-form-label>
+              <nz-form-control [nzSm]="16" [nzXs]="24">
+                <input type="file" id="image" #fileImg class="d-none" multiple
+                       accept="image/gif, image/jpeg, image/png" (change)="onFileSelected($event, fileImg)" autocomplete="off">
+                <div nz-row>
+                  <ng-container *ngFor="let url of arrImageLocal;  index as i">
+                    <div nz-col nzSpan="4" class="mb-3 mr-3">
+                      <div style="position: relative">
+                        <img [src]="url" [alt]="product.name" class="img-thumbnail img-product w-100" [width]="125">
+                        <button nz-button nzType="primary" nzShape="circle"
+                                class="close-img" nzDanger nzSize="small" (click)="removeImgNew(i)">
+                          <i nz-icon nzType="close" class="d-inline-flex"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <div nz-col nzSpan="24">
+                    <button nz-button nzType="dashed" style="width: 125px;" (click)="fileImg.click()">
+                      <i nz-icon nzType="plus-circle" nzTheme="outline" class="d-inline-flex"></i> Thêm ảnh
+                    </button>
+                    <span class="ml-2">{{countFileSelected}} ảnh được chọn</span>
+                  </div>
+                </div>
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item class="mt-3">
+              <nz-form-label [nzSm]="4" [nzXs]="24" class="font-weight-bold">Nội dung</nz-form-label>
+              <nz-form-control [nzSm]="16" [nzXs]="24">
+                <ckeditor [editor]="Editor"
+                          [config]="config"
+                          (ready)="onReady($event)" [(ngModel)]="product.description" [ngModelOptions]="{standalone: true}"></ckeditor>
+              </nz-form-control>
+            </nz-form-item>
+
+            <div nz-row>
+              <div nz-col nzSpan="24" class="text-center mt-5">
+                <button nz-button [nzType]="'primary'" (click)="save()" class="px-5">
+                  <span>Lưu</span>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<div *ngIf="submitted">
   <h4>You submitted successfully!</h4>
-  <button class="btn btn-success" (click)="newProduct()">Add</button>
+  <button class="btn btn-success" (click)="newProduct()">Tiếp tục thêm</button>
 </div>
+
+

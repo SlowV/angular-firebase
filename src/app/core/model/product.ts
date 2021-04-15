@@ -2,7 +2,12 @@ import firebase from 'firebase/app';
 export class Product {
   id: string;
   name: string;
-  images: any = [];
-  createdAt: Date | firebase.firestore.Timestamp;
-  isSelected: boolean;
+  sku: string;
+  price = 0;
+  description: string;
+  images: {
+    name: string;
+    url: string;
+  }[];
+  createdAt: firebase.firestore.Timestamp;
 }
