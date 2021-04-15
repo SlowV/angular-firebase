@@ -28,7 +28,9 @@ export class ProductService {
   }
 
   getById(id: string): Observable<Product> {
-    return this.productRef.doc<Product>(id).valueChanges();
+    return this.productRef.doc<Product>(id).valueChanges({
+      idField: 'id'
+    });
   }
 
   update(key: string, product: Product): Promise<void> {

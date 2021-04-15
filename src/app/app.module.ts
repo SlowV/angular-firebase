@@ -17,6 +17,8 @@ import {AppRoutingModule} from './app-routing.module';
 import {IconsProviderModule} from './icons-provider.module';
 import {AngularFireStorageModule} from '@angular/fire/storage';
 import {Spinner} from './core/filter/spinner.interceptor';
+import {AngularFireAuthModule} from '@angular/fire/auth';
+import {AuthService} from './core/serivce/auth.service';
 
 registerLocaleData(en);
 
@@ -34,11 +36,13 @@ registerLocaleData(en);
     AngularFireModule.initializeApp(environment.firebaseConfig, 'cloud'),
     AngularFirestoreModule,
     AngularFireStorageModule,
+    AngularFireAuthModule,
     CoreModule
   ],
   providers: [
     {provide: NZ_I18N, useValue: en_US},
-    {provide: HTTP_INTERCEPTORS, useClass: Spinner, multi: true}
+    {provide: HTTP_INTERCEPTORS, useClass: Spinner, multi: true},
+    AuthService
   ],
   bootstrap: [AppComponent]
 })

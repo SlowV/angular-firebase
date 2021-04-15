@@ -130,16 +130,19 @@
           </div>
           <div nz-col nzSpan="24">
             <nz-card nzTitle="Nội dung" class="mt-3">
-              <nz-form-item *ngIf="isEditing">
+              <nz-form-item *ngIf="isEditing === true; else descriptionView">
                 <nz-form-label [nzSm]="4" [nzXs]="24" class="font-weight-bold">Nội dung</nz-form-label>
                 <nz-form-control [nzSm]="16" [nzXs]="24">
                   <ckeditor [editor]="editor"
                             [config]="config"
-                            (ready)="onReady($event)" [disabled]="isEditing"
+                            (ready)="onReady($event)"
                             [(ngModel)]="product.description"
                             [ngModelOptions]="{standalone: true}"></ckeditor>
                 </nz-form-control>
               </nz-form-item>
+              <ng-template #descriptionView>
+                <div [innerHTML]="product.description"></div>
+              </ng-template>
             </nz-card>
           </div>
           <div nz-col nzSpan="24" class="text-center mt-5" *ngIf="isEditing">
