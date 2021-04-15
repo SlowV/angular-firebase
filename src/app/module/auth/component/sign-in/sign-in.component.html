@@ -1,29 +1,77 @@
-<form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()">
-  <nz-form-item>
-    <nz-form-control nzErrorTip="Please input your username!">
-      <nz-input-group nzPrefixIcon="user">
-        <input type="text" nz-input formControlName="userName" #username placeholder="Username" required/>
-      </nz-input-group>
-    </nz-form-control>
-  </nz-form-item>
-  <nz-form-item>
-    <nz-form-control nzErrorTip="Please input your Password!">
-      <nz-input-group nzPrefixIcon="lock">
-        <input type="password" nz-input formControlName="password" #password placeholder="Password" required/>
-      </nz-input-group>
-    </nz-form-control>
-  </nz-form-item>
-  <div nz-row class="login-form-margin">
-    <div nz-col [nzSpan]="12">
-      <label nz-checkbox formControlName="remember">
-        <span>Remember me</span>
-      </label>
-    </div>
-    <div nz-col [nzSpan]="12">
-      <a class="login-form-forgot">Forgot password</a>
+<div class="box-login">
+  <div nz-row class="w-100">
+    <div nz-col nzSpan="6" [nzOffset]="9" id="login">
+      <h3>Đăng nhập</h3>
+      <form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()">
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Vui lòng nhập E-mail!">
+            <nz-input-group nzPrefixIcon="mail">
+              <input type="text" nz-input formControlName="email" #username placeholder="E-mail" required/>
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Vui lòng nhập mật khẩu!">
+            <nz-input-group nzPrefixIcon="lock">
+              <input type="password" nz-input formControlName="password" #password placeholder="Mật khẩu" required/>
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <div nz-row class="login-form-margin">
+          <div nz-col [nzSpan]="12">
+            <label nz-checkbox formControlName="remember">
+              <span>Nhớ tài khoản</span>
+            </label>
+          </div>
+          <div nz-col [nzSpan]="12">
+            <a class="login-form-forgot">Quên mật khẩu</a>
+          </div>
+        </div>
+        <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'"
+                (click)="authService.signIn(username.value, password.value)">Đăng nhập</button>
+        Hoặc <a [routerLink]="['sign-up']"> đăng ký nhanh! </a>
+      </form>
+      <hr class="my-4">
+      <div class="title-social text-secondary">
+        Đăng nhập nhanh bằng mạng xã hội
+      </div>
+      <ul>
+        <li>
+          <a>
+            <button nz-button nzType="default" class="bg-facebook" nzSize="default" nzShape="circle">
+              <i nz-icon nzType="facebook" nzTheme="outline" class="d-inline-flex"></i>
+            </button>
+          </a>
+        </li>
+        <li>
+          <a>
+            <button nz-button nzType="default" class="bg-twitter" nzSize="default" nzShape="circle">
+              <i nz-icon nzType="twitter" nzTheme="outline" class="d-inline-flex"></i>
+            </button>
+          </a>
+        </li>
+        <li>
+          <a>
+            <button nz-button nzType="default" (click)="loginGoogle()" class="bg-google" nzSize="default" nzShape="circle">
+              <i nz-icon nzType="google" nzTheme="outline" class="d-inline-flex"></i>
+            </button>
+          </a>
+        </li>
+        <li>
+          <a>
+            <button nz-button nzType="default" class="bg-linkedin" nzSize="default" nzShape="circle">
+              <i nz-icon nzType="linkedin" nzTheme="outline" class="d-inline-flex"></i>
+            </button>
+          </a>
+        </li>
+        <li>
+          <a>
+            <button nz-button nzType="default" class="bg-instagram" nzSize="default" nzShape="circle">
+              <i nz-icon nzType="instagram" nzTheme="outline" class="d-inline-flex"></i>
+            </button>
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
-  <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'"
-          (click)="authService.signIn(username.value, password.value)">Log in</button>
-  Or <a [routerLink]="['sign-up']"> register now! </a>
-</form>
+</div>

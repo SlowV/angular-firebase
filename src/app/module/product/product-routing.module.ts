@@ -3,6 +3,7 @@ import {ProductDetailComponent} from './component/product-detail/product-detail.
 import {ProductListComponent} from './component/product-list/product-list.component';
 import {NgModule} from '@angular/core';
 import {ProductFormComponent} from './component/product-form/product-form.component';
+import {AuthGuard} from '../../core/guard/auth.guard';
 
 const routes: Routes = [
   {
@@ -11,15 +12,18 @@ const routes: Routes = [
       {
         path: '',
         pathMatch: 'full',
-        component: ProductListComponent
+        component: ProductListComponent,
+        canActivateChild: [AuthGuard]
       },
       {
         path: 'detail/:id',
-        component: ProductDetailComponent
+        component: ProductDetailComponent,
+        canActivateChild: [AuthGuard]
       },
       {
         path: 'create',
-        component: ProductFormComponent
+        component: ProductFormComponent,
+        canActivateChild: [AuthGuard]
       }
     ]
   }

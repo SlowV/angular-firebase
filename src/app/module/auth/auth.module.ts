@@ -6,17 +6,18 @@ import { VerifyEmailComponent } from './component/verify-email/verify-email.comp
 import {AuthRoutingModule} from './auth-routing.module';
 import { SignUpComponent } from './component/sign-up/sign-up.component';
 import {CoreModule} from '../../core/core.module';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 
 
 @NgModule({
   declarations: [SignInComponent, ForgotPasswordComponent, VerifyEmailComponent, SignUpComponent],
-  imports: [
-    CommonModule,
-    AuthRoutingModule,
-    CoreModule,
-    ReactiveFormsModule
-  ]
+    imports: [
+        CommonModule,
+        AuthRoutingModule,
+        CoreModule,
+        ReactiveFormsModule,
+        FormsModule
+    ]
 })
 export class AuthModule { }

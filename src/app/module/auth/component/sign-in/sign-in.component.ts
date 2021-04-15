@@ -17,9 +17,9 @@ export class SignInComponent implements OnInit {
 
   ngOnInit(): void {
     this.validateForm = this.fb.group({
-      userName: [null, [Validators.required]],
+      email: [null, [Validators.required]],
       password: [null, [Validators.required]],
-      remember: [true]
+      remember: [false]
     });
   }
 
@@ -31,4 +31,7 @@ export class SignInComponent implements OnInit {
     }
   }
 
+  loginGoogle(): void {
+    this.authService.GoogleAuth().then(() => console.log('Login Google'));
+  }
 }

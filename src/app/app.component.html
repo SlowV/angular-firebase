@@ -17,8 +17,11 @@
           <li nz-menu-item nzMatchRouter>
             <a routerLink="/admin/welcome">Welcome</a>
           </li>
-          <li [routerLink]="['/admin/product']" nz-menu-item nzMatchRouter>
-            <a>Product</a>
+          <li nz-menu-item nzMatchRouter>
+            <a [routerLink]="['/admin/product']">Product</a>
+          </li>
+          <li nz-menu-item nzMatchRouter>
+            <a (click)="logout()">Đăng xuất</a>
           </li>
         </ul>
       </li>

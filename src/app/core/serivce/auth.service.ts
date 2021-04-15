@@ -1,17 +1,20 @@
 import {Injectable, NgZone} from '@angular/core';
-import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/firestore';
+import {AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument} from '@angular/fire/firestore';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {Router} from '@angular/router';
-import firebase from 'firebase/app';
 import {User} from '../model/user';
 import {Subscription} from 'rxjs';
+import firebase from 'firebase';
 import auth = firebase.auth;
+import {first} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   userData: any;
+  useRef: AngularFirestoreCollection;
+  private path = '/users';
 
   constructor(
     public afs: AngularFirestore,   // Inject Firestore service
@@ -19,16 +22,22 @@ export class AuthService {
     public router: Router,
     public ngZone: NgZone // NgZone service to remove outside scope warning
   ) {
+    this.useRef = afs.collection(this.path);
     /* Saving user data in localstorage when
     logged in and setting up null when logged out */
-    this.afAuth.authState.subscribe(user => {
+    this.afAuth.authState.subscribe((user) => {
       if (user) {
-        this.userData = user;
-        localStorage.setItem('user', JSON.stringify(this.userData));
-        JSON.parse(localStorage.getItem('user'));
+        console.log(user);
+        this.afs.collection<User>(this.path, ref => ref.where('uid', '==', user.uid)).get()
+          .subscribe((value) => {
+            value.forEach((result) => {
+              this.userData = result.data();
+              localStorage.setItem('user', JSON.stringify(this.userData));
+              console.log(JSON.parse(localStorage.getItem('user')));
+            });
+          });
       } else {
         localStorage.setItem('user', null);
-        JSON.parse(localStorage.getItem('user'));
       }
     });
   }
@@ -40,20 +49,23 @@ export class AuthService {
         this.ngZone.run(() => {
           this.router.navigate(['admin/welcome']);
         });
-        this.setUserData(result.user);
+        localStorage.setItem('user', JSON.stringify(result.user));
+        this.getUSerData(result.user.uid);
       }).catch((error) => {
         console.error(error.message);
       });
   }
 
   // Sign up with email/password
-  signUp(email, password): Promise<void> {
-    return this.afAuth.createUserWithEmailAndPassword(email, password)
+  signUp(user: User, password): Promise<void> {
+    return this.afAuth.createUserWithEmailAndPassword(user.email, password)
       .then((result) => {
+        user.uid = result.user.uid;
         this.sendVerificationMail();
         this.setUserData(result.user);
+        console.log('UPDATE user', user);
       }).catch((error) => {
-        window.alert(error.message);
+        console.log(error.message);
       });
   }
 
@@ -70,29 +82,37 @@ export class AuthService {
   forgotPassword(passwordResetEmail): Promise<void> {
     return this.afAuth.sendPasswordResetEmail(passwordResetEmail)
       .then(() => {
-        window.alert('Password reset email sent, check your inbox.');
+        console.log('Password reset email sent, check your inbox.');
       }).catch((error) => {
-        window.alert(error);
+        console.log(error);
       });
   }
 
   // Returns true when user is looged in and email is verified
   get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem('user'));
-    return (user !== null && user.emailVerified !== false);
+    console.log(user);
+    return user !== null && user.emailVerified !== false;
   }
 
-  setUserData(user): Promise<void> {
-    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
+  setUserData(user): Promise<any> {
+    const userRef: AngularFirestoreDocument<any> = this.afs.doc<User>('users/' + user.uid);
     const userData: User = {
       uid: user.uid,
       email: user.email,
       displayName: user.displayName,
       photoURL: user.photoURL,
-      emailVerified: user.emailVerified
+      emailVerified: user.emailVerified,
+      role: user.role || ['CUSTOMER']
     };
     return userRef.set(userData, {
       merge: true
+    });
+  }
+
+  getUSerData(uid: string): any {
+    return this.useRef.doc(uid).valueChanges({
+      idField: 'uid'
     });
   }
 
@@ -110,12 +130,12 @@ export class AuthService {
         });
         this.setUserData(result.user);
       }).catch((error) => {
-        window.alert(error);
+        console.log(error);
       });
   }
 
   // Sign out
-  SignOut(): Promise<void> {
+  signOut(): Promise<void> {
     return this.afAuth.signOut().then(() => {
       localStorage.removeItem('user');
       this.router.navigate(['admin/auth']);

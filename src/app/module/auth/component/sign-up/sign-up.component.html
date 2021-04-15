@@ -1,1 +1,91 @@
-<p>sign-up works!</p>
+<div class="box-register">
+  <div nz-row class="w-100">
+    <div nz-col nzSpan="10" [nzOffset]="7">
+      <h3>Đăng ký</h3>
+      <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+        <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="email" >E-mail</nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="E-mail không hợp lệ!">
+            <input nz-input formControlName="email" id="email" [(ngModel)]="user.email"/>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="password" nzRequired>Mật khẩu</nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Vui lòng nhập mật khẩu!">
+            <input nz-input type="password" id="password" formControlName="password"
+                   #password
+                   (ngModelChange)="updateConfirmValidator()"/>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="checkPassword" nzRequired>Nhập lại mật khẩu</nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="errorTpl">
+            <input nz-input type="password" formControlName="checkPassword" id="checkPassword"/>
+            <ng-template #errorTpl let-control>
+              <ng-container *ngIf="control.hasError('required')">
+                Vui lòng nhập lại mật khẩu!
+              </ng-container>
+              <ng-container *ngIf="control.hasError('confirm')">
+                Mật khẩu không khớp!
+              </ng-container>
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="nickname" nzTooltipTitle="Tên thường gọi của bạn">
+            <span>Tên gọi</span>
+          </nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24">
+            <input nz-input id="nickname" formControlName="nickname" [(ngModel)]="user.displayName"/>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="role">Cấp bậc</nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24">
+            <div style="border-bottom: 1px solid rgb(233, 233, 233);">
+              <label nz-checkbox [(ngModel)]="allChecked"
+                     (ngModelChange)="updateAllChecked()"
+                     [nzIndeterminate]="indeterminate"
+                     [ngModelOptions]="{standalone: true}">
+                Chọn tất cả
+              </label>
+            </div>
+            <br/>
+            <nz-checkbox-group
+              [(ngModel)]="checkOptionsOne"
+              (ngModelChange)="updateSingleChecked()" [ngModelOptions]="{standalone: true}"></nz-checkbox-group>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="phoneNumber" nzRequired>Số điện thoại</nz-form-label>
+          <nz-form-control
+            [nzSm]="14"
+            [nzXs]="24"
+            [nzValidateStatus]="validateForm.controls['phoneNumber']" nzErrorTip="Vui lòng nhập số diện thoại!">
+            <nz-input-group [nzAddOnBefore]="addOnBeforeTemplate">
+              <ng-template #addOnBeforeTemplate>
+                <nz-select formControlName="phoneNumberPrefix" class="phone-select">
+                  <nz-option nzLabel="+84" nzValue="+84"></nz-option>
+                </nz-select>
+              </ng-template>
+              <input formControlName="phoneNumber" id="'phoneNumber'" nz-input/>
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item nz-row class="register-area">
+          <nz-form-control [nzSpan]="14" [nzOffset]="6">
+            <button nz-button nzType="primary" (click)="register(password.value)">Đăng ký</button>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+    </div>
+  </div>
+</div>
+
+
