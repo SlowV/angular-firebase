@@ -27,19 +27,25 @@ export class AuthService {
     logged in and setting up null when logged out */
     this.afAuth.authState.subscribe((user) => {
       if (user) {
-        console.log(user);
-        this.afs.collection<User>(this.path, ref => ref.where('uid', '==', user.uid)).get()
-          .subscribe((value) => {
-            value.forEach((result) => {
-              this.userData = result.data();
-              localStorage.setItem('user', JSON.stringify(this.userData));
-              console.log(JSON.parse(localStorage.getItem('user')));
-            });
-          });
+        this.getUserByUid(user.uid).then(async () => this.saveUserLocalStore(this.userData));
       } else {
         localStorage.setItem('user', null);
       }
     });
+  }
+
+  saveUserLocalStore(user: User): void {
+    localStorage.setItem('user', JSON.stringify(user));
+  }
+
+  async getUserByUid(uid: string): Promise<void> {
+    this.afs.collection<User>(this.path, ref => ref.where('uid', '==', uid)).get().toPromise()
+      .then((value) => {
+        value.forEach((result) => {
+          this.userData = result.data();
+          return this.userData;
+        });
+      });
   }
 
   // Sign in with email/password
