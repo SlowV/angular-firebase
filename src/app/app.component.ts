@@ -9,7 +9,6 @@ import {AuthService} from './core/serivce/auth.service';
 export class AppComponent {
   title = 'sm-ngrx';
   isCollapsed = false;
-
   constructor(private authService: AuthService) {
   }
 
