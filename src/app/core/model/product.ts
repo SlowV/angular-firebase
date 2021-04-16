@@ -1,10 +1,11 @@
 import firebase from 'firebase/app';
+
 export class Product {
   id: string;
   name: string;
   sku: string;
   price = 0;
-  description: string;
+  description = '';
   images: {
     name: string;
     url: string;

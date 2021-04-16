@@ -8,6 +8,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ProductFormComponent} from './component/product-form/product-form.component';
 import {CKEditorModule} from '@ckeditor/ckeditor5-angular';
 import {LazyLoadImageModule} from 'ng-lazyload-image';
+import {NzImageModule} from 'ng-zorro-antd/image';
 
 
 @NgModule({
@@ -19,7 +20,10 @@ import {LazyLoadImageModule} from 'ng-lazyload-image';
     CoreModule,
     ReactiveFormsModule,
     FormsModule,
-    LazyLoadImageModule
+    LazyLoadImageModule,
+    NzImageModule
   ]
 })
-export class ProductModule { }
+// @ts-ignore
+export class ProductModule {
+}

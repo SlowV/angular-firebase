@@ -40,7 +40,7 @@ export class SignUpComponent implements OnInit {
       return {confirm: true, error: true};
     }
     return {};
-  };
+  }
 
   constructor(
     public authService: AuthService,

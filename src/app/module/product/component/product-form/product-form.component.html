@@ -35,7 +35,12 @@
                   <ng-container *ngFor="let url of arrImageLocal;  index as i">
                     <div nz-col nzSpan="4" class="mb-3 mr-3">
                       <div style="position: relative">
-                        <img [src]="url" [alt]="product.name" class="img-thumbnail img-product w-100" [width]="125">
+                        <img nz-image
+                             [nzSrc]="url"
+                             [src]="url"
+                             [alt]="product.name"
+                             class="img-thumbnail img-product w-100"
+                             [width]="125">
                         <button nz-button nzType="primary" nzShape="circle"
                                 class="close-img" nzDanger nzSize="small" (click)="removeImgNew(i)">
                           <i nz-icon nzType="close" class="d-inline-flex"></i>
@@ -64,7 +69,7 @@
 
             <div nz-row>
               <div nz-col nzSpan="24" class="text-center mt-5">
-                <button nz-button [nzType]="'primary'" (click)="save()" class="px-5">
+                <button nz-button nzType="primary" [nzLoading]="isUploading" (click)="save()" class="px-5">
                   <span>Lưu</span>
                 </button>
               </div>
@@ -75,10 +80,5 @@
     </div>
   </div>
 </ng-container>
-
-<div *ngIf="submitted">
-  <h4>You submitted successfully!</h4>
-  <button class="btn btn-success" (click)="newProduct()">Tiếp tục thêm</button>
-</div>
 
 

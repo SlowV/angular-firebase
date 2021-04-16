@@ -1,6 +1,25 @@
-<div class="verification-form float-right">
-  <button class="ant-btn" nz-button type="submit" (click)="toCreatePage($event)">
-    <i nz-icon nzType="plus" nzTheme="outline" class="d-inline-flex"></i> Create new
+<div class="verification-form d-flex justify-content-between mb-3">
+  <div>
+    <label class="font-weight-bolder">Danh mục: </label>
+    <nz-select ngModel="lucy" class="mx-2" nzShowSearch style="width: 120px">
+      <nz-option nzValue="jack" nzLabel="Jack"></nz-option>
+      <nz-option nzValue="lucy" nzLabel="Lucy"></nz-option>
+    </nz-select>
+  </div>
+  <div>
+    <label class="font-weight-bolder">Bộ sưu tập: </label>
+    <nz-select ngModel="lucy" class="mx-2" nzShowSearch style="width: 120px">
+      <nz-option nzValue="jack" nzLabel="Jack"></nz-option>
+      <nz-option nzValue="lucy" nzLabel="Lucy"></nz-option>
+    </nz-select>
+  </div>
+  <div>
+    <label class="font-weight-bolder">Tìm kiếm: </label>
+    <input type="text" nz-input class="d-inline mx-2" style="width: 300px;"
+           placeholder="Tìm kiếm tên, danh mục, bộ sưu tập...">
+  </div>
+  <button class="ant-btn mx-1" nz-button type="submit" nzType="primary" nzShape="round" (click)="toCreatePage($event)">
+    <i nz-icon nzType="plus-circle" nzTheme="outline" class="d-inline-flex"></i> Thêm mới
   </button>
 </div>
 
@@ -11,8 +30,9 @@
           [nzPageSize]="pageSize"
           [nzPageIndex]="pageIndex"
           nzSize="small"
-          nzTitle="Product List"
-          [nzData]="products">
+          nzTitle="Danh sách sản phẩm"
+          [nzData]="products"
+          [nzNoResult]="empty">
   <thead>
   <tr>
     <th
@@ -20,10 +40,10 @@
       [(nzChecked)]="checked"
       [nzIndeterminate]="indeterminate"
       (nzCheckedChange)="onAllChecked($event)" nzWidth="30px"></th>
-    <th nzColumnKey="id" nzWidth="50px">#ID</th>
-    <th nzColumnKey="sku" nzWidth="70px">SKU</th>
+    <th nzColumnKey="id" nzWidth="50px" nzCustomFilter>#ID</th>
+    <th nzColumnKey="sku" nzWidth="70px" nzCustomFilter>SKU</th>
     <th nzColumnKey="name" nzWidth="200px" [nzSortFn]="sortFnName" nzCustomFilter>Name</th>
-    <th nzColumnKey="createdAt" nzWidth="150px">Created At</th>
+    <th nzColumnKey="createdAt" nzWidth="150px" nzCustomFilter>Created At</th>
     <th nzWidth="300px">Image</th>
     <th nzWidth="70px">Action</th>
   </tr>
@@ -38,22 +58,40 @@
     <td>
       <ng-container *ngIf="data.images">
         <ng-container *ngFor="let img of data.images; let i = index">
-          <img [lazyLoad]="img.url" [alt]="data.name" class="img-thumbnail m-1 img-product"
-               [width]="getSize(data.images)">
+          <img
+            nz-image
+            [nzSrc]="img.url"
+            [lazyLoad]="img.url"
+            [alt]="data.name"
+            class="img-thumbnail m-1 img-product"
+            [width]="getSize(data.images)">
           <ng-container *ngIf="(i + 1) % 4 === 0"><br></ng-container>
         </ng-container>
       </ng-container>
     </td>
     <td>
-      <button nz-button nzType="link" [nzSize]="size" (click)="toDetail($event, data.id)" nzShape="circle" class="vertical-align-unset lh-50">
+      <button nz-button nzType="link" [nzSize]="size" (click)="toDetail($event, data.id)" nzShape="circle"
+              class="vertical-align-unset lh-50">
         <i nz-icon nzType="eye" nzTheme="outline"></i>
       </button>
       <nz-divider nzType="vertical" style="height: 24px;"></nz-divider>
-      <button nz-button nzType="link" [nzSize]="size" nzDanger nzShape="circle" class="vertical-align-unset lh-50"
-              (click)="deleteProduct(data.id, data.name)">
+      <button nz-button
+              nzType="link" [nzSize]="size"
+              nzDanger nzShape="circle"
+              class="vertical-align-unset lh-50"
+              nz-popconfirm
+              nzPopconfirmTitle="Bạn có chắc muốn xóa?"
+              nzPopconfirmPlacement="left"
+              nzOkText="Đồng ý"
+              nzCancelText="Hủy"
+              (nzOnConfirm)="deleteProduct(data.id, data.name)">
         <i nz-icon nzType="delete"></i>
       </button>
     </td>
   </tr>
   </tbody>
 </nz-table>
+
+<ng-template #empty>
+  <nz-empty></nz-empty>
+</ng-template>

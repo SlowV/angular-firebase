@@ -74,6 +74,7 @@ import {NzDrawerModule} from 'ng-zorro-antd/drawer';
 import {SpinnerComponent} from './share/spinner/spinner.component';
 import {DateTimePipe} from './pipe/date-time.pipe';
 import {LazyLoadImageModule} from 'ng-lazyload-image';
+import {NzImageModule} from 'ng-zorro-antd/image';
 
 
 @NgModule({
@@ -150,7 +151,8 @@ import {LazyLoadImageModule} from 'ng-lazyload-image';
     NzWaveModule,
     NzResizableModule,
     NzPipesModule,
-    LazyLoadImageModule
+    LazyLoadImageModule,
+    NzImageModule
     // ng-zorro-antd
   ],
   exports: [

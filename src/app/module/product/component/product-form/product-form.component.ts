@@ -47,18 +47,13 @@ export class ProductFormComponent implements OnInit {
 
   async pushImagesToProduct(): Promise<void> {
     this.imagesFile = this.cleanArrays(this.imagesFile);
-
     console.log('PRODUCT IMAGES \n', this.product.images);
     console.log('PRODUCT\n', this.product);
-
-    await this.productService.uploadFiles(this.imagesFile).then(async (value) => {
+    await this.productService.uploadFiles(this.imagesFile).then(async (value: { name: string, url: string }[]) => {
       console.log('END ', 'task upload Image');
       this.product.images = value;
       this.productService.save(this.product).then(() => {
         this.message.success(`Thêm sản phẩm ${this.product.name} phẩm thành công!`);
-        this.product = new Product();
-        this.imagesFile = [];
-        this.submitted = false;
         this.resetFrom();
         console.log('PRODUCT AFTER Store \n', this.product);
       });
@@ -66,7 +61,12 @@ export class ProductFormComponent implements OnInit {
   }
 
   resetFrom(): void {
-    this.file.value = null;
+    this.product = new Product();
+    this.imagesFile = [];
+    this.submitted = false;
+    this.arrImageLocal = [];
+    this.countFileSelected = 0;
+    this.isUploading = false;
   }
 
   cleanArrays(arr: File[]): File[] {

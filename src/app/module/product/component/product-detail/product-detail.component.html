@@ -91,8 +91,12 @@
               <div nz-row>
                 <ng-container *ngFor="let img of product.images; index as i">
                   <div nz-col nzSpan="8" class="text-center">
-                    <img [lazyLoad]="img.url" [alt]="product.name" class="img-thumbnail m-1 img-product" [width]="125"
-                         src="">
+                    <img nz-image
+                         [nzSrc]="img.url"
+                         [lazyLoad]="img.url"
+                         [alt]="product.name"
+                         class="img-thumbnail m-1 img-product"
+                         [width]="125">
                     <button [hidden]="!isEditing" nz-button nzType="primary" nzShape="circle"
                             class="close-img" nzDanger nzSize="small" (click)="removeImageTmp(i)">
                       <i nz-icon nzType="close"></i>
@@ -103,7 +107,12 @@
               <div nz-row>
                 <ng-container *ngFor="let imgNew of arrImageLocal; index as i">
                   <div nz-col nzSpan="8" class="text-center">
-                    <img [src]="imgNew" [alt]="product.name" class="img-thumbnail m-1 img-product" [width]="125">
+                    <img nz-image
+                         [nzSrc]="imgNew"
+                         [src]="imgNew"
+                         [alt]="product.name"
+                         class="img-thumbnail m-1 img-product"
+                         [width]="125">
                     <button [hidden]="!isEditing" nz-button nzType="primary" nzShape="circle"
                             class="close-img" nzDanger nzSize="small" (click)="removeImgNew(i)">
                       <i nz-icon nzType="close"></i>
