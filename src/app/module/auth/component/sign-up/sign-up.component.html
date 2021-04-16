@@ -46,7 +46,7 @@
         <nz-form-item>
           <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="role">Cấp bậc</nz-form-label>
           <nz-form-control [nzSm]="14" [nzXs]="24">
-            <div style="border-bottom: 1px solid rgb(233, 233, 233);">
+            <div style="border-bottom: 1px solid rgb(233, 233, 233);" class="mt-2">
               <label nz-checkbox [(ngModel)]="allChecked"
                      (ngModelChange)="updateAllChecked()"
                      [nzIndeterminate]="indeterminate"
@@ -73,7 +73,7 @@
                   <nz-option nzLabel="+84" nzValue="+84"></nz-option>
                 </nz-select>
               </ng-template>
-              <input formControlName="phoneNumber" id="'phoneNumber'" nz-input/>
+              <input formControlName="phoneNumber" id="'phoneNumber'" nz-input [(ngModel)]="user.phoneNumber"/>
             </nz-input-group>
           </nz-form-control>
         </nz-form-item>

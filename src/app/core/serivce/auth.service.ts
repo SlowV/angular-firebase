@@ -69,7 +69,7 @@ export class AuthService {
       .then((result: UserCredential) => {
         user.uid = result.user.uid;
         this.sendVerificationMail();
-        this.setUserData(result.user).then();
+        this.setUserData(user).then();
         console.log('UPDATE user', user);
       }).catch((error) => {
         console.log(error.message);
@@ -98,23 +98,27 @@ export class AuthService {
   // Returns true when user is logged in and email is verified
   get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem('user'));
-    console.log(user);
     return user !== null && user.emailVerified !== false;
   }
 
   setUserData(user): Promise<any> {
     const userRef: AngularFirestoreDocument<any> = this.afs.doc<User>('users/' + user.uid);
-    const userData: User = {
-      uid: user.uid,
-      email: user.email,
-      displayName: user.displayName,
-      photoURL: user.photoURL,
-      emailVerified: user.emailVerified,
-      role: user.role || ['CUSTOMER']
-    };
+    const userData: User = this.buildUser(user);
     return userRef.set(userData, {
       merge: true
     });
+  }
+
+  buildUser(user): User {
+    return {
+      uid: user.uid,
+      email: user.email,
+      displayName: user.displayName || '',
+      photoURL: user.photoURL || null,
+      emailVerified: user.emailVerified,
+      role: user.role || ['CUSTOMER'],
+      phoneNumber: user.phoneNumber || null
+    } as User;
   }
 
   getUSerData(uid: string): any {
@@ -128,14 +132,27 @@ export class AuthService {
     return this.AuthLogin(new auth.GoogleAuthProvider());
   }
 
+  FacebookAuth(): Promise<void> {
+    return this.AuthLogin(new auth.FacebookAuthProvider());
+  }
+
+  TwitterAuth(): Promise<void> {
+    return this.AuthLogin(new auth.TwitterAuthProvider());
+  }
+
+  GitHubAuth(): Promise<void> {
+    return this.AuthLogin(new auth.GithubAuthProvider());
+  }
+
   // Auth logic to run auth providers
   AuthLogin(provider): Promise<void> {
     return this.afAuth.signInWithPopup(provider)
-      .then((result) => {
+      .then((result: UserCredential) => {
         this.ngZone.run(() => {
           this.router.navigate(['admin/welcome']).then();
         });
-        this.setUserData(result.user).then();
+        const u = this.buildUser(result.user);
+        this.setUserData(u).then();
       }).catch((error) => {
         console.log(error);
       });

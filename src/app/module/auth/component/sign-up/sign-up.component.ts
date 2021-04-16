@@ -18,7 +18,7 @@ export class SignUpComponent implements OnInit {
     {label: 'Khách hàng', value: 'CUSTOMER', checked: true},
     {label: 'Hệ thống', value: 'SYSTEM', checked: false},
   ];
-  user: User;
+  user: User = new User();
 
   submitForm(): void {
     // tslint:disable-next-line:forin
@@ -40,7 +40,7 @@ export class SignUpComponent implements OnInit {
       return {confirm: true, error: true};
     }
     return {};
-  }
+  };
 
   constructor(
     public authService: AuthService,
@@ -93,6 +93,12 @@ export class SignUpComponent implements OnInit {
   }
 
   register(password: string): void {
-    this.authService.signUp(this.user, password);
+    this.checkOptionsOne.map(v => {
+      if (v.checked) {
+        this.user.role.push(v.value);
+      }
+    });
+    this.authService.signUp(this.user, password).then(() => {
+    });
   }
 }

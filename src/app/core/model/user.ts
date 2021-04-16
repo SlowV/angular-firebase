@@ -3,6 +3,7 @@ export class User {
   email: string;
   displayName: string;
   photoURL: string;
+  phoneNumber: string;
   emailVerified: boolean;
-  role: string[];
+  role: string[] = [];
 }

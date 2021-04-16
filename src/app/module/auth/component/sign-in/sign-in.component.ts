@@ -34,4 +34,16 @@ export class SignInComponent implements OnInit {
   loginGoogle(): void {
     this.authService.GoogleAuth().then(() => console.log('Login Google'));
   }
+
+  loginFacebook(): void {
+    this.authService.FacebookAuth().then(() => console.log('Facebook Google'));
+  }
+
+  loginGithub(): void {
+    this.authService.GitHubAuth().then(() => console.log('Github Google'));
+  }
+
+  loginTwitter(): void {
+    this.authService.TwitterAuth().then(() => console.log('Login Google'));
+  }
 }
