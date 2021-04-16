@@ -110,6 +110,7 @@ export class AuthService {
   }
 
   buildUser(user): User {
+    console.log(user);
     return {
       uid: user.uid,
       email: user.email,
