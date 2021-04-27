@@ -4,6 +4,10 @@ import {Product} from '../../../../core/model/product';
 import {NzButtonSize} from 'ng-zorro-antd/button';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {Router} from '@angular/router';
+import {registerLocaleData} from '@angular/common';
+import vi from '@angular/common/locales/vi';
+
+registerLocaleData(vi);
 
 @Component({
   selector: 'app-product-list',
@@ -12,39 +16,6 @@ import {Router} from '@angular/router';
   changeDetection: ChangeDetectionStrategy.Default
 })
 export class ProductListComponent implements OnInit, AfterViewInit {
-  total = 1;
-  pageSize = 5;
-  pageIndex = 1;
-  listOfSelection = [
-    {
-      text: 'Select All Row',
-      onSelect: () => {
-        this.onAllChecked(true);
-      }
-    },
-    {
-      text: 'Select Odd Row',
-      onSelect: () => {
-        this.listOfCurrentPageData.forEach((data, index) => this.updateCheckedSet(data.id, index % 2 !== 0));
-        this.refreshCheckedStatus();
-      }
-    },
-    {
-      text: 'Select Even Row',
-      onSelect: () => {
-        this.listOfCurrentPageData.forEach((data, index) => this.updateCheckedSet(data.id, index % 2 === 0));
-        this.refreshCheckedStatus();
-      }
-    }
-  ];
-  loading = true;
-  products: ReadonlyArray<Product> = [];
-  size: NzButtonSize = 'small';
-  checked = false;
-  indeterminate = false;
-  setOfCheckedId = new Set<string>();
-  listOfCurrentPageData: ReadonlyArray<Product> = [];
-  sortFnName = (a: Product, b: Product) => a.name.localeCompare(b.name);
 
   constructor(
     private productService: ProductService,
@@ -52,8 +23,22 @@ export class ProductListComponent implements OnInit, AfterViewInit {
     private router: Router) {
   }
 
+  total = 1;
+  pageSize = 5;
+  pageIndex = 1;
+  loading = true;
+  products: Product[] = [];
+  productTmp: Product[] = [];
+  size: NzButtonSize = 'small';
+  checked = false;
+  setOfCheckedId = new Set<string>();
+  listOfCurrentPageData: ReadonlyArray<Product> = [];
+  plaDateRange = ['Bắt đầu', 'Kết thúc'];
+  sortFnName = (a: Product, b: Product) => a.name.localeCompare(b.name);
+
   ngOnInit(): void {
   }
+
   ngAfterViewInit(): void {
     this.loadProducts();
   }
@@ -64,6 +49,7 @@ export class ProductListComponent implements OnInit, AfterViewInit {
       this.products = products;
       this.total = this.products.length;
       this.loading = false;
+      this.productTmp = this.products;
     });
   }
 
@@ -92,7 +78,6 @@ export class ProductListComponent implements OnInit, AfterViewInit {
 
   refreshCheckedStatus(): void {
     this.checked = this.listOfCurrentPageData.every(item => this.setOfCheckedId.has(item.id));
-    this.indeterminate = this.listOfCurrentPageData.some(item => this.setOfCheckedId.has(item.id)) && !this.checked;
   }
 
   deleteProduct(id: string, name: string): void {
@@ -124,6 +109,11 @@ export class ProductListComponent implements OnInit, AfterViewInit {
 
   toDetail($event: Event, id: string): void {
     $event.stopPropagation();
-    this.router.navigate(['admin/product', 'detail', id]);
+    this.router.navigate(['admin/product', 'detail', id]).then();
+  }
+
+  search($event: any): void {
+    const message = $event.target.value;
+    this.productService.search();
   }
 }

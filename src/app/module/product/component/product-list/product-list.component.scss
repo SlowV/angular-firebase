@@ -22,4 +22,9 @@
 
 .img-product {
   object-fit: cover;
+  transition: .3s;
+  cursor: pointer;
+  &:hover {
+    opacity: .8;
+  }
 }

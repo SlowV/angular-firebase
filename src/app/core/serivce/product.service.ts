@@ -2,16 +2,18 @@ import {Injectable} from '@angular/core';
 import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
 import {Observable} from 'rxjs';
 import {Product} from '../model/product';
-import {map} from 'rxjs/operators';
 import firebase from 'firebase';
 import {AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask} from '@angular/fire/storage';
 import DocumentReference = firebase.firestore.DocumentReference;
-import UploadTaskSnapshot = firebase.storage.UploadTaskSnapshot;
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
+  private readonly FIELD_NAME = 'name';
+  private readonly FIELD_ID = 'id';
+  private readonly FIELD_DESCRIPTION = 'description';
+  private readonly FIELD_CREATED_AT = 'createdAt';
   private readonly path = '/product';
 
   productRef: AngularFirestoreCollection<Product> = null;
@@ -21,15 +23,24 @@ export class ProductService {
     this.productRef = afs.collection(this.path, ref => ref.orderBy('createdAt', 'desc'));
   }
 
-  getAll(): Observable<Product[]> {
+  getAll(val?: string, date?: any): Observable<Product[]> {
+    if (val !== null) {
+      this.productRef.ref
+        .where(this.FIELD_NAME, '==', `%${val}%`)
+        .where(this.FIELD_DESCRIPTION, '==', `%${val}%`);
+    }
+    if (date !== null) {
+      this.productRef.ref.where(this.FIELD_CREATED_AT, '<=', date.start);
+      this.productRef.ref.where(this.FIELD_CREATED_AT, '>=', date.end);
+    }
     return this.productRef.valueChanges({
-      idField: 'id'
+      idField: this.FIELD_ID
     });
   }
 
   getById(id: string): Observable<Product> {
     return this.productRef.doc<Product>(id).valueChanges({
-      idField: 'id'
+      idField: this.FIELD_ID
     });
   }
 
@@ -51,20 +62,14 @@ export class ProductService {
     return this.storageRef.put(file).snapshotChanges().toPromise();
   }
 
-  getStorageRef(): AngularFireStorageReference {
-    return this.storageRef;
-  }
-
   deleteImage(fullPath): Observable<any> {
     this.storageRef = this.storage.ref(fullPath);
     return this.storageRef.delete();
   }
 
   async uploadFiles(files: File[]): Promise<{ name: string, url: string }[]> {
-    console.log('START ', 'task upload Image');
     const tasks = files.map(async (file) => {
       const task = await this.uploadImage(file);
-      console.log('INSIDE ', 'task upload Image');
       return task.ref.getDownloadURL().then(url => {
         return {
           name: task.metadata.fullPath,
@@ -74,5 +79,4 @@ export class ProductService {
     });
     return await Promise.all(tasks);
   }
-
 }

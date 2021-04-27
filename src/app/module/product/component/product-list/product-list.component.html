@@ -16,12 +16,22 @@
   <div>
     <label class="font-weight-bolder">Tìm kiếm: </label>
     <input type="text" nz-input class="d-inline mx-2" style="width: 300px;"
-           placeholder="Tìm kiếm tên, danh mục, bộ sưu tập...">
+           placeholder="Tìm kiếm tên, danh mục, bộ sưu tập..." (change)="search($event)">
+  </div>
+  <div>
+    <label class="font-weight-bolder">Ngày tạo: </label>
+    <nz-range-picker class="mx-2"
+                     nzMode="date"
+                     [nzFormat]="'yyyy/MM/dd'"
+                     [nzPlaceHolder]="plaDateRange"
+                     nzShowToday="true"
+    ></nz-range-picker>
   </div>
   <button class="ant-btn mx-1" nz-button type="submit" nzType="primary" nzShape="round" (click)="toCreatePage($event)">
     <i nz-icon nzType="plus-circle" nzTheme="outline" class="d-inline-flex"></i> Thêm mới
   </button>
 </div>
+<hr>
 
 <nz-table #productTable
           nzShowPagination
@@ -36,13 +46,11 @@
   <thead>
   <tr>
     <th
-      [nzSelections]="listOfSelection"
       [(nzChecked)]="checked"
-      [nzIndeterminate]="indeterminate"
       (nzCheckedChange)="onAllChecked($event)" nzWidth="30px"></th>
-    <th nzColumnKey="id" nzWidth="50px" nzCustomFilter>#ID</th>
     <th nzColumnKey="sku" nzWidth="70px" nzCustomFilter>SKU</th>
     <th nzColumnKey="name" nzWidth="200px" [nzSortFn]="sortFnName" nzCustomFilter>Name</th>
+    <th nzColumnKey="quantity" nzWidth="50px" nzCustomFilter>Số lượng</th>
     <th nzColumnKey="createdAt" nzWidth="150px" nzCustomFilter>Created At</th>
     <th nzWidth="300px">Image</th>
     <th nzWidth="70px">Action</th>
@@ -51,9 +59,9 @@
   <tbody>
   <tr *ngFor="let data of productTable.data; index as i">
     <td [nzChecked]="setOfCheckedId.has(data.id)" (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
-    <td>{{data.id}}</td>
     <td>{{data.sku}}</td>
     <td>{{data.name}}</td>
+    <td>{{data.quantity || 0}}</td>
     <td>{{data.createdAt.seconds | dateTime}}</td>
     <td>
       <ng-container *ngIf="data.images">

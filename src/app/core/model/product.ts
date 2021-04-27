@@ -5,6 +5,7 @@ export class Product {
   name: string;
   sku: string;
   price = 0;
+  quantity = 0;
   description = '';
   images: {
     name: string;
