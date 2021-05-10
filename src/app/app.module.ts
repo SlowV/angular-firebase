@@ -19,6 +19,7 @@ import {Spinner} from './core/filter/spinner.interceptor';
 import {AngularFireAuthModule} from '@angular/fire/auth';
 import {AuthService} from './core/serivce/auth.service';
 import {LAZYLOAD_IMAGE_HOOKS, ScrollHooks} from 'ng-lazyload-image';
+import {NgAisModule} from 'angular-instantsearch';
 
 registerLocaleData(en);
 
@@ -27,6 +28,7 @@ registerLocaleData(en);
     AppComponent
   ],
   imports: [
+    // NgAisModule.forRoot(),
     BrowserModule,
     AppRoutingModule,
     IconsProviderModule,

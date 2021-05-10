@@ -16,7 +16,7 @@
   <div>
     <label class="font-weight-bolder">Tìm kiếm: </label>
     <input type="text" nz-input class="d-inline mx-2" style="width: 300px;"
-           placeholder="Tìm kiếm tên, danh mục, bộ sưu tập..." (change)="search($event)">
+           placeholder="Tìm kiếm tên, danh mục, bộ sưu tập..." (keypress)="onChangeSearch($event)">
   </div>
   <div>
     <label class="font-weight-bolder">Ngày tạo: </label>

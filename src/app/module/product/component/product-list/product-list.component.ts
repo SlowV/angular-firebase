@@ -28,12 +28,12 @@ export class ProductListComponent implements OnInit, AfterViewInit {
   pageIndex = 1;
   loading = true;
   products: Product[] = [];
-  productTmp: Product[] = [];
   size: NzButtonSize = 'small';
   checked = false;
   setOfCheckedId = new Set<string>();
   listOfCurrentPageData: ReadonlyArray<Product> = [];
   plaDateRange = ['Bắt đầu', 'Kết thúc'];
+  valSearch = '';
   sortFnName = (a: Product, b: Product) => a.name.localeCompare(b.name);
 
   ngOnInit(): void {
@@ -43,13 +43,12 @@ export class ProductListComponent implements OnInit, AfterViewInit {
     this.loadProducts();
   }
 
-  loadProducts(): void {
+  loadProducts(search: string = null, date: { start: string, end: string } = null): void {
     this.loading = true;
-    this.productService.getAll().subscribe((products: Product[]) => {
+    this.productService.getAll(search, date).subscribe((products: Product[]) => {
       this.products = products;
       this.total = this.products.length;
       this.loading = false;
-      this.productTmp = this.products;
     });
   }
 
@@ -95,7 +94,7 @@ export class ProductListComponent implements OnInit, AfterViewInit {
     if (newTab) {
       window.open(this.router.url + '/create');
     } else {
-      this.router.navigate(['admin/product', 'create']);
+      this.router.navigate(['admin/product', 'create']).then();
     }
   }
 
@@ -112,8 +111,14 @@ export class ProductListComponent implements OnInit, AfterViewInit {
     this.router.navigate(['admin/product', 'detail', id]).then();
   }
 
-  search($event: any): void {
-    const message = $event.target.value;
-    this.productService.search();
+  onChangeSearch($event): void {
+    this.valSearch = $event.target.value;
+    if ($event.keyCode === 13) {
+      this.search();
+    }
+  }
+
+  private search(): void {
+    this.loadProducts(this.valSearch);
   }
 }
