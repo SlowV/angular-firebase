@@ -17,9 +17,6 @@
           <li nz-menu-item nzMatchRouter>
             <a routerLink="/admin/welcome">Welcome</a>
           </li>
-          <li nz-menu-item nzMatchRouter>
-            <a (click)="logout()">Đăng xuất</a>
-          </li>
         </ul>
       </li>
       <li nz-submenu nzOpen nzTitle="Quản lý" nzIcon="appstore">
@@ -41,8 +38,21 @@
             </span>
           </div>
           <div nz-col nzSpan="12" class="text-right">
-            <span class="header-trigger">
-              SLowV
+            <span class="header-trigger" style="font-size: 15px">
+              <span nz-dropdown [nzDropdownMenu]="menu">
+                Xin chào <span class="text-primary">{{user.displayName}}</span>
+                <nz-avatar nzIcon="user" [nzSrc]="user.photoURL"  class="mx-2"></nz-avatar>
+                <i nz-icon nzType="down" class="d-inline-flex"></i>
+              </span>
+              <nz-dropdown-menu #menu="nzDropdownMenu">
+                <ul nz-menu>
+                  <li nz-menu-item (click)="getUserInfo()"><i nz-icon nzType="user" nzTheme="outline"
+                                                              class="d-inline-flex"></i> Thông tin</li>
+                   <li nz-menu-item>
+                      <a (click)="logout()"><i nz-icon nzType="logout" nzTheme="outline" class="d-inline-flex"></i> Đăng xuất</a>
+                   </li>
+                </ul>
+              </nz-dropdown-menu>
             </span>
           </div>
         </div>
@@ -54,5 +64,59 @@
       </div>
     </nz-content>
     <nz-footer class="app-footer">Footer</nz-footer>
+    <nz-modal nzCancelText="Đóng" [(nzVisible)]="isVisible" nzTitle="Thông tin tài khoản" (nzOnCancel)="handleCancel()"
+              (nzOnOk)="handleOk()">
+      <ng-container *nzModalContent>
+        <div nz-row>
+          <div nz-col nzSpan="6">
+            <div style="position: relative">
+              <img
+                style="object-fit: cover; width: 100%"
+                nz-image
+                class="avatar"
+                [src]="userInfo.photoURL"
+                [lazyLoad]="userInfo.photoURL"
+                [alt]="userInfo.displayName">
+            </div>
+            <div class="mt-2 font-weight-bold text-center text-uppercase text-secondary name">
+              {{userInfo.displayName}}
+            </div>
+          </div>
+          <div nz-col nzSpan="18">
+            <ng-container>
+              <nz-form-item class="mb-0">
+                <nz-form-label [nzSm]="6" [nzXs]="24" class="font-weight-bold" nzFor="email">Email
+                </nz-form-label>
+                <nz-form-control [nzSm]="18" [nzXs]="24">
+                  <input nz-input id="email" [disabled]="true" [value]="userInfo.email"/>
+                </nz-form-control>
+              </nz-form-item>
+            </ng-container>
+
+            <ng-container>
+              <nz-form-item class="mb-0">
+                <nz-form-label [nzSm]="6" [nzXs]="24" class="font-weight-bold" nzFor="phoneNumber">Sđt
+                </nz-form-label>
+                <nz-form-control [nzSm]="18" [nzXs]="24">
+                  <input nz-input id="phoneNumber" [disabled]="true" [value]="userInfo.phoneNumber || 'Chưa cập nhật...'"/>
+                </nz-form-control>
+              </nz-form-item>
+            </ng-container>
+
+            <ng-container>
+              <nz-form-item class="mb-0">
+                <nz-form-label [nzSm]="6" [nzXs]="24" class="font-weight-bold" nzFor="role">Chức vụ
+                </nz-form-label>
+                <nz-form-control [nzSm]="18" [nzXs]="24">
+                  <span *ngFor="let role of userInfo.role" [className]="getRoleName(role).class + ' d-inline-flex role'">
+                    {{getRoleName(role).name}}
+                  </span>
+                </nz-form-control>
+              </nz-form-item>
+            </ng-container>
+          </div>
+        </div>
+      </ng-container>
+    </nz-modal>
   </nz-layout>
 </nz-layout>

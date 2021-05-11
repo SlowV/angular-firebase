@@ -9,7 +9,7 @@ import {
 import {AngularFireAuth} from '@angular/fire/auth';
 import {Router} from '@angular/router';
 import {User} from '../model/user';
-import {Subscription} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import firebase from 'firebase';
 import auth = firebase.auth;
 import UserCredential = firebase.auth.UserCredential;
@@ -164,6 +164,12 @@ export class AuthService {
     return this.afAuth.signOut().then(() => {
       localStorage.removeItem('user');
       this.router.navigate(['admin/auth']).then();
+    });
+  }
+
+  findUserById(id: string): Observable<User> {
+    return this.useRef.doc<User>(id).valueChanges({
+      idField: 'uid'
     });
   }
 }

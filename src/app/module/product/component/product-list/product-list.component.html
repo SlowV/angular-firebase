@@ -1,4 +1,4 @@
-<div class="verification-form d-flex justify-content-between mb-3">
+<div class="verification-form d-flex justify-content-between mb-3 bg-white py-3 border-bottom">
   <div>
     <label class="font-weight-bolder">Danh mục: </label>
     <nz-select ngModel="lucy" class="mx-2" nzShowSearch style="width: 120px">
@@ -16,7 +16,7 @@
   <div>
     <label class="font-weight-bolder">Tìm kiếm: </label>
     <input type="text" nz-input class="d-inline mx-2" style="width: 300px;"
-           placeholder="Tìm kiếm tên, danh mục, bộ sưu tập..." (keypress)="onChangeSearch($event)">
+           placeholder="Tìm kiếm tên, danh mục, bộ sưu tập..." [(ngModel)]="valSearch" autocomplete="true">
   </div>
   <div>
     <label class="font-weight-bolder">Ngày tạo: </label>
@@ -31,14 +31,11 @@
     <i nz-icon nzType="plus-circle" nzTheme="outline" class="d-inline-flex"></i> Thêm mới
   </button>
 </div>
-<hr>
 
 <nz-table #productTable
-          nzShowPagination
+          nzShowPagination="false"
           (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
           [nzLoading]="loading"
-          [nzPageSize]="pageSize"
-          [nzPageIndex]="pageIndex"
           nzSize="small"
           nzTitle="Danh sách sản phẩm"
           [nzData]="products"
@@ -52,13 +49,13 @@
     <th nzColumnKey="sku" nzWidth="70px" nzCustomFilter>SKU</th>
     <th nzColumnKey="name" nzWidth="200px" [nzSortFn]="sortFnName" nzCustomFilter>Name</th>
     <th nzColumnKey="quantity" nzWidth="50px" nzCustomFilter>Số lượng</th>
-    <th nzColumnKey="createdAt" nzWidth="150px" nzCustomFilter>Created At</th>
-    <th nzWidth="300px">Image</th>
-    <th nzWidth="70px">Action</th>
+    <th nzColumnKey="createdAt" nzWidth="150px" nzCustomFilter>Ngày tạo</th>
+    <th nzWidth="300px">Hình ảnh</th>
+    <th nzWidth="70px">Thao tác</th>
   </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let data of productTable.data; index as i">
+  <tr *ngFor="let data of productTable.data | filter:valSearch; index as i">
     <td [nzChecked]="setOfCheckedId.has(data.id)" (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
     <td>{{data.sku}}</td>
     <td>{{data.name}}</td>

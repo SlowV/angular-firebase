@@ -18,8 +18,10 @@ import {AngularFireStorageModule} from '@angular/fire/storage';
 import {Spinner} from './core/filter/spinner.interceptor';
 import {AngularFireAuthModule} from '@angular/fire/auth';
 import {AuthService} from './core/serivce/auth.service';
-import {LAZYLOAD_IMAGE_HOOKS, ScrollHooks} from 'ng-lazyload-image';
+import {LAZYLOAD_IMAGE_HOOKS, LazyLoadImageModule, ScrollHooks} from 'ng-lazyload-image';
 import {NgAisModule} from 'angular-instantsearch';
+import {Ng2SearchPipeModule} from 'ng2-search-filter';
+import {NzImageModule} from 'ng-zorro-antd/image';
 
 registerLocaleData(en);
 
@@ -29,6 +31,7 @@ registerLocaleData(en);
   ],
   imports: [
     // NgAisModule.forRoot(),
+    Ng2SearchPipeModule,
     BrowserModule,
     AppRoutingModule,
     IconsProviderModule,

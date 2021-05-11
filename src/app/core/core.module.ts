@@ -225,7 +225,9 @@ import {NzImageModule} from 'ng-zorro-antd/image';
     NzWaveModule,
     NzResizableModule,
     NzPipesModule,
-    DateTimePipe
+    DateTimePipe,
+    NzImageModule,
+    LazyLoadImageModule
   ]
 })
 export class CoreModule { }
