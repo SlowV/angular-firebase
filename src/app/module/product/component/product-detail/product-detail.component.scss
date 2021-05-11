@@ -12,6 +12,11 @@ input{
     cursor: default;
   }
 }
+
+.slv-input {
+  width: 100%;
+}
+
 :host ::ng-deep {
   .ant-input-number-input {
     &:disabled{

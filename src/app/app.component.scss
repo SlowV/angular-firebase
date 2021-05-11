@@ -81,6 +81,26 @@ nz-content {
   min-height: 100%;
 }
 
+.ant-layout-content {
+  &::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.12);
+    background-color: #fafafa;
+  }
+
+  &::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: -webkit-gradient(linear, left top, left bottom, from(#1890ff), to(#75bcff));
+    background: linear-gradient(180deg, #1890ff, #75bcff);
+    border-radius: 30px;
+    box-shadow: inset 2px 2px 2px hsla(0, 0%, 100%, 0.25), inset -2px -2px 2px rgba(0, 0, 0, 0.25);
+  }
+}
+
+
 .app-footer {
   background: #fff;
 }

@@ -30,14 +30,12 @@ export class ProductService {
     return this.afs.collection<Product>(this.path, (ref: CollectionReference<DocumentData>) => {
       const query: CollectionReference<DocumentData> | Query<Product> = ref;
       if (val && val !== '') {
-        console.log(val);
         query
           .orderBy(this.FIELD_NAME, 'desc')
           .startAt(val)
           .endAt(val + '\uf8ff');
       }
       if (date) {
-        console.log(date);
         query
           .orderBy(this.FIELD_CREATED_AT)
           .where(this.FIELD_CREATED_AT, '>=', date.start)
@@ -64,7 +62,6 @@ export class ProductService {
   }
 
   save(product: Product): Promise<DocumentReference<Product>> {
-    console.log('SERVICE', product);
     return this.buildRefBase().add({...product});
   }
 

@@ -22,7 +22,22 @@
             <nz-form-item class="mb-0">
               <nz-form-label [nzSm]="4" [nzXs]="24" class="font-weight-bold" nzFor="price">Giá (vnđ)</nz-form-label>
               <nz-form-control [nzSm]="16" [nzXs]="24">
-                <input nz-input id="price" [(ngModel)]="product.price" [ngModelOptions]="{standalone: true}"/>
+                <nz-input-number
+                  class="w-100"
+                  [(ngModel)]="product.price"
+                  [ngModelOptions]="{standalone: true}"
+                  [nzMin]="0" [nzStep]="1000"></nz-input-number>
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item class="mb-0">
+              <nz-form-label [nzSm]="4" [nzXs]="24" class="font-weight-bold" nzRequired>Số lượng kho</nz-form-label>
+              <nz-form-control [nzSm]="16" [nzXs]="24">
+                <nz-input-number
+                  class="w-100"
+                  [(ngModel)]="product.quantity"
+                  [ngModelOptions]="{standalone: true}"
+                  [nzMin]="0" [nzStep]="1"></nz-input-number>
               </nz-form-control>
             </nz-form-item>
 

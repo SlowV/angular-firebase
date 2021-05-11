@@ -1,9 +1,10 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Product} from '../../../../core/model/product';
 import {ProductService} from '../../../../core/serivce/product.service';
-import firebase from 'firebase/app';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import * as DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
+import {User} from '../../../../core/model/user';
+import {LocalStorageUtil} from '../../../../core/utils/LocalStorageUtil';
 
 @Component({
   selector: 'app-product-form',
@@ -27,7 +28,7 @@ export class ProductFormComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
-    private message: NzMessageService,
+    private message: NzMessageService
   ) {
   }
 
@@ -41,23 +42,22 @@ export class ProductFormComponent implements OnInit {
 
   async save(): Promise<void> {
     this.isUploading = true;
-    this.product.createdAt = firebase.firestore.Timestamp.fromDate(new Date());
     await this.pushImagesToProduct();
   }
 
   async pushImagesToProduct(): Promise<void> {
     this.imagesFile = this.cleanArrays(this.imagesFile);
-    console.log('PRODUCT IMAGES \n', this.product.images);
-    console.log('PRODUCT\n', this.product);
-    await this.productService.uploadFiles(this.imagesFile).then(async (value: { name: string, url: string }[]) => {
-      console.log('END ', 'task upload Image');
-      this.product.images = value;
-      this.productService.save(this.product).then(() => {
-        this.message.success(`Thêm sản phẩm ${this.product.name} phẩm thành công!`);
-        this.resetFrom();
-        console.log('PRODUCT AFTER Store \n', this.product);
+    await this.productService.uploadFiles(this.imagesFile)
+      .then(async (value: { name: string, url: string }[]) => {
+        const user: User = LocalStorageUtil.getData<User>('user');
+        this.product.createdBy = user.displayName;
+        this.product.updatedBy = user.displayName;
+        this.product.images = value;
+        this.productService.save(this.product).then(() => {
+          this.message.success(`Thêm sản phẩm ${this.product.name} phẩm thành công!`);
+          this.resetFrom();
+        });
       });
-    });
   }
 
   resetFrom(): void {

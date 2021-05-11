@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {DEFAULT_CURRENCY_CODE, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
@@ -45,6 +45,7 @@ registerLocaleData(en);
     {provide: NZ_I18N, useValue: en_US},
     {provide: HTTP_INTERCEPTORS, useClass: Spinner, multi: true},
     {provide: LAZYLOAD_IMAGE_HOOKS, useClass: ScrollHooks},
+    { provide: DEFAULT_CURRENCY_CODE, useValue: 'VND' },
     AuthService
   ],
   bootstrap: [AppComponent]

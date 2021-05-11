@@ -45,7 +45,7 @@
                   <nz-form-label [nzSm]="5" [nzXs]="24" class="font-weight-bold">SKU</nz-form-label>
                   <nz-form-control [nzSm]="19" [nzXs]="24">
                     <input nz-input id="sku" [disabled]="!isEditing" [(ngModel)]="product.sku"
-                           [ngModelOptions]="{standalone: true}"/>
+                           [ngModelOptions]="{standalone: true}" (change)="changeContentEdit()"/>
                   </nz-form-control>
                 </nz-form-item>
 
@@ -53,7 +53,24 @@
                   <nz-form-label [nzSm]="5" [nzXs]="24" class="font-weight-bold" nzRequired>Tên</nz-form-label>
                   <nz-form-control [nzSm]="19" [nzXs]="24">
                     <input nz-input id="name" [disabled]="!isEditing" [(ngModel)]="product.name"
-                           [ngModelOptions]="{standalone: true}"/>
+                           [ngModelOptions]="{standalone: true}" (change)="changeContentEdit()"/>
+                  </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item class="mb-0">
+                  <nz-form-label [nzSm]="5" [nzXs]="24" class="font-weight-bold">Số lượng</nz-form-label>
+                  <nz-form-control [nzSm]="19" [nzXs]="24">
+                    <span [hidden]="isEditing" class="ml-2">
+                      {{product.quantity | currency: '&nbsp;' : true : '4.0-2' | lowercase }} đơn vị
+                    </span>
+                    <nz-input-number
+                      [hidden]="!isEditing"
+                      [style]="!isEditing ? 'border: none' : ''"
+                      class="slv-input"
+                      [disabled]="!isEditing"
+                      [(ngModel)]="product.quantity"
+                      [ngModelOptions]="{standalone: true}"
+                      [nzMin]="0" [nzStep]="1000" (change)="changeContentEdit()"></nz-input-number>
                   </nz-form-control>
                 </nz-form-item>
 
@@ -70,16 +87,46 @@
                       [disabled]="!isEditing"
                       [(ngModel)]="product.price"
                       [ngModelOptions]="{standalone: true}"
-                      [nzMin]="0" [nzStep]="1000"></nz-input-number>
+                      [nzMin]="0" [nzStep]="1000" (change)="changeContentEdit()"></nz-input-number>
                   </nz-form-control>
                 </nz-form-item>
 
-                <ng-container *ngIf="product.createdAt">
+                <ng-container>
                   <nz-form-item class="mb-0">
                     <nz-form-label [nzSm]="5" [nzXs]="24" class="font-weight-bold" nzFor="createdAt">Ngày tạo
                     </nz-form-label>
                     <nz-form-control [nzSm]="19" [nzXs]="24">
-                      <input nz-input id="createdAt" [disabled]="true" [value]="product.createdAt.seconds | dateTime"/>
+                      <input nz-input id="createdAt" [disabled]="true" [value]="(product.createdAt.seconds | dateTime) || ''"/>
+                    </nz-form-control>
+                  </nz-form-item>
+                </ng-container>
+
+                <ng-container>
+                  <nz-form-item class="mb-0">
+                    <nz-form-label [nzSm]="5" [nzXs]="24" class="font-weight-bold" nzFor="createdBy">Người tạo
+                    </nz-form-label>
+                    <nz-form-control [nzSm]="19" [nzXs]="24">
+                      <input nz-input id="createdBy" [disabled]="true" [value]="product.createdBy || ''"/>
+                    </nz-form-control>
+                  </nz-form-item>
+                </ng-container>
+
+                <ng-container>
+                  <nz-form-item class="mb-0">
+                    <nz-form-label [nzSm]="6" [nzXs]="24" class="font-weight-bold" nzFor="updatedAt">Ngày thay đổi
+                    </nz-form-label>
+                    <nz-form-control [nzSm]="18" [nzXs]="24" *ngIf="product.updatedAt">
+                      <input nz-input id="updatedAt" [disabled]="true" [value]="(product.updatedAt.seconds | dateTime) || ''"/>
+                    </nz-form-control>
+                  </nz-form-item>
+                </ng-container>
+
+                <ng-container>
+                  <nz-form-item class="mb-0">
+                    <nz-form-label [nzSm]="6" [nzXs]="24" class="font-weight-bold" nzFor="updatedBy">Người thay đổi
+                    </nz-form-label>
+                    <nz-form-control [nzSm]="18" [nzXs]="24">
+                      <input nz-input id="updatedBy" [disabled]="true" [value]="product.updatedBy || ''"/>
                     </nz-form-control>
                   </nz-form-item>
                 </ng-container>
@@ -109,7 +156,7 @@
                   <div nz-col nzSpan="8" class="text-center">
                     <img nz-image
                          [nzSrc]="imgNew"
-                         [src]="imgNew"
+                         [lazyLoad]="imgNew"
                          [alt]="product.name"
                          class="img-thumbnail m-1 img-product"
                          [width]="125">
@@ -141,8 +188,7 @@
           <div nz-col nzSpan="24">
             <nz-card nzTitle="Nội dung" class="mt-3">
               <nz-form-item *ngIf="isEditing === true; else descriptionView">
-                <nz-form-label [nzSm]="4" [nzXs]="24" class="font-weight-bold">Nội dung</nz-form-label>
-                <nz-form-control [nzSm]="16" [nzXs]="24">
+                <nz-form-control [nzSm]="24" [nzXs]="24">
                   <ckeditor [editor]="editor"
                             [config]="config"
                             (ready)="onReady($event)"
@@ -156,7 +202,7 @@
             </nz-card>
           </div>
           <div nz-col nzSpan="24" class="text-center mt-5" *ngIf="isEditing">
-            <button nz-button nzType="primary" nzSize="default" (click)="update()" class="mx-1">Lưu</button>
+            <button nz-button nzType="primary" nzSize="default" (click)="update()" [disabled]="isEditContent" class="mx-1">Lưu</button>
             <button nz-button nzType="default" nzSize="default" (click)="isEditing = !isEditing" class="mx-1">Hủy
             </button>
           </div>
