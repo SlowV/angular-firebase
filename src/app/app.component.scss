@@ -120,16 +120,28 @@ input {
 }
 
 .role {
-  border: 1px dashed #e3e3e3;
   padding: 5px 10px;
   font-size: 13px;
   border-radius: 35px;
   cursor: default;
   font-weight: 450;
+  color: #fff;
 
   &.customer {
-    border-color: #8d8d8d;
-    background: #dddddd;
+    background: #b8b8b8;
+  }
+
+  &.admin {
+    background: #1890FF;
+
+  }
+
+  &.system {
+    background: #1d1d1d;
+  }
+
+  &.employee {
+    background: #ff9d00;
   }
 }
 

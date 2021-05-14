@@ -25,8 +25,6 @@ export class ProductDetailComponent implements OnInit {
     config = {
         placeholder: 'Nhập lội dung cho sản phẩm ...'
     };
-    isEditContent;
-    productCompare: Product;
 
     constructor(
         private productService: ProductService,
@@ -50,10 +48,6 @@ export class ProductDetailComponent implements OnInit {
     getData(id: string): void {
         this.productService.getById(id).subscribe(product => {
             this.product = product;
-            this.productCompare = ObjectUtils.convertDataToNewObject<Product>(this.product);
-            const editContent = ObjectUtils.isEqualData(this.product, this.productCompare);
-            console.log(editContent);
-            this.isEditContent = editContent;
         });
     }
 
@@ -119,7 +113,5 @@ export class ProductDetailComponent implements OnInit {
     }
 
     changeContentEdit(): void {
-        this.isEditContent = ObjectUtils.isEqualData(this.product, this.productCompare);
-        console.log(this.isEditContent);
     }
 }

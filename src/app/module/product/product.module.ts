@@ -10,21 +10,19 @@ import {CKEditorModule} from '@ckeditor/ckeditor5-angular';
 import {LazyLoadImageModule} from 'ng-lazyload-image';
 import {NzImageModule} from 'ng-zorro-antd/image';
 import {Ng2SearchPipeModule} from 'ng2-search-filter';
+import {ButtonsModule, WavesModule} from 'angular-bootstrap-md';
 
 
 @NgModule({
   declarations: [ProductListComponent, ProductDetailComponent, ProductFormComponent],
-    imports: [
-        CommonModule,
-        ProductRoutingModule,
-        CKEditorModule,
-        CoreModule,
-        ReactiveFormsModule,
-        FormsModule,
-        LazyLoadImageModule,
-        NzImageModule,
-        Ng2SearchPipeModule
-    ]
+  imports: [
+    CommonModule,
+    ProductRoutingModule,
+    CKEditorModule,
+    CoreModule,
+    ReactiveFormsModule,
+    FormsModule
+  ]
 })
 // @ts-ignore
 export class ProductModule {

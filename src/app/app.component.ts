@@ -13,23 +13,14 @@ export class AppComponent {
   title = 'sm-ngrx';
   isCollapsed = false;
   user: User;
-  userInfo: User;
   isVisible = false;
 
   constructor(private authService: AuthService) {
     this.user = this.getUserLogin();
-    console.log(this.user);
   }
 
   logout(): void {
     this.authService.signOut().then();
-  }
-
-  getUserInfo(): void {
-    this.authService.findUserById(this.user.uid).subscribe(value => {
-      this.userInfo = value;
-      this.showModal();
-    });
   }
 
   getUserLogin(): User {
@@ -41,12 +32,10 @@ export class AppComponent {
   }
 
   handleOk(): void {
-    console.log('Button ok clicked!');
     this.isVisible = false;
   }
 
   handleCancel(): void {
-    console.log('Button cancel clicked!');
     this.isVisible = false;
   }
 

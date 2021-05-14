@@ -59,7 +59,7 @@
     <td [nzChecked]="setOfCheckedId.has(data.id)" (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
     <td>{{data.sku}}</td>
     <td>{{data.name}}</td>
-    <td>{{data.quantity || 0}}</td>
+    <td>{{data.quantity || 0 | currency: '&nbsp;' : true : '0.0-2' | lowercase}}</td>
     <td>{{data.createdAt.seconds | dateTime}}</td>
     <td>
       <ng-container *ngIf="data.images">

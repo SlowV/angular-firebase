@@ -75,6 +75,9 @@ import {SpinnerComponent} from './share/spinner/spinner.component';
 import {DateTimePipe} from './pipe/date-time.pipe';
 import {LazyLoadImageModule} from 'ng-lazyload-image';
 import {NzImageModule} from 'ng-zorro-antd/image';
+import {FormsModule} from '@angular/forms';
+import {Ng2SearchPipeModule} from 'ng2-search-filter';
+import {ButtonsModule, WavesModule} from 'angular-bootstrap-md';
 
 
 @NgModule({
@@ -227,7 +230,10 @@ import {NzImageModule} from 'ng-zorro-antd/image';
     NzPipesModule,
     DateTimePipe,
     NzImageModule,
-    LazyLoadImageModule
+    LazyLoadImageModule,
+    Ng2SearchPipeModule,
+    ButtonsModule,
+    WavesModule
   ]
 })
 export class CoreModule { }

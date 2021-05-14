@@ -22,6 +22,9 @@ import {LAZYLOAD_IMAGE_HOOKS, LazyLoadImageModule, ScrollHooks} from 'ng-lazyloa
 import {NgAisModule} from 'angular-instantsearch';
 import {Ng2SearchPipeModule} from 'ng2-search-filter';
 import {NzImageModule} from 'ng-zorro-antd/image';
+import {AuthInterceptor} from './core/filter/auth.interceptor';
+import {DEFAULT_INTERPOLATION_CONFIG} from '@angular/compiler';
+import {MDBBootstrapModule} from 'angular-bootstrap-md';
 
 registerLocaleData(en);
 
@@ -30,7 +33,7 @@ registerLocaleData(en);
     AppComponent
   ],
   imports: [
-    // NgAisModule.forRoot(),
+    MDBBootstrapModule.forRoot(),
     Ng2SearchPipeModule,
     BrowserModule,
     AppRoutingModule,
@@ -46,9 +49,8 @@ registerLocaleData(en);
   ],
   providers: [
     {provide: NZ_I18N, useValue: en_US},
-    {provide: HTTP_INTERCEPTORS, useClass: Spinner, multi: true},
     {provide: LAZYLOAD_IMAGE_HOOKS, useClass: ScrollHooks},
-    { provide: DEFAULT_CURRENCY_CODE, useValue: 'VND' },
+    {provide: DEFAULT_CURRENCY_CODE, useValue: 'VND'},
     AuthService
   ],
   bootstrap: [AppComponent]

@@ -1,6 +1,7 @@
 import {RouterModule, Routes} from '@angular/router';
 import {NgModule} from '@angular/core';
 import {AuthGuard} from './core/guard/auth.guard';
+import {AdminGuard} from './core/guard/admin.guard';
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', redirectTo: '/admin/welcome'},
@@ -12,7 +13,7 @@ const routes: Routes = [
   {
     path: 'admin/product',
     loadChildren: () => import('./module/product/product.module').then(m => m.ProductModule),
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard, AdminGuard]
   },
   {
     path: 'admin/auth',

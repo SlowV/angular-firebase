@@ -13,6 +13,7 @@ import {Observable, Subscription} from 'rxjs';
 import firebase from 'firebase';
 import auth = firebase.auth;
 import UserCredential = firebase.auth.UserCredential;
+import {LocalStorageUtil} from '../utils/LocalStorageUtil';
 
 @Injectable({
   providedIn: 'root'
@@ -40,7 +41,9 @@ export class AuthService {
             value.forEach((result: QueryDocumentSnapshot<User>) => {
               this.userData = result.data();
               this.userData.role = [];
-              localStorage.setItem('user', JSON.stringify(this.userData));
+              this.findUserById(this.userData.uid).subscribe(userResult => {
+                LocalStorageUtil.setData<User>('user', userResult);
+              });
             });
           });
       } else {
@@ -97,7 +100,7 @@ export class AuthService {
 
   // Returns true when user is logged in and email is verified
   get isLoggedIn(): boolean {
-    const user = JSON.parse(localStorage.getItem('user'));
+    const user = LocalStorageUtil.getData<User>('user');
     return user !== null && user.emailVerified !== false;
   }
 

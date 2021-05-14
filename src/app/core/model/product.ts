@@ -16,4 +16,5 @@ export class Product {
   updatedAt: Timestamp = Timestamp.fromDate(new Date());
   createdBy = '';
   updatedBy = '';
+  eventId: string;
 }
