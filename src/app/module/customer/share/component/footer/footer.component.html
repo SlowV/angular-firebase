@@ -1,6 +1,6 @@
 <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
 <footer class="footer footer-2">
-  <div class="icon-boxes-container" th:classappend="${page} != 'home' ? 'd-none' : ''">
+  <div class="icon-boxes-container">
     <div class="container">
       <div class="row">
         <div class="col-sm-6 col-lg-3">
@@ -58,13 +58,13 @@
     </div><!-- End .container -->
   </div><!-- End .icon-boxes-container -->
 
-  <div class="footer-middle" th:classappend="${page} != '' ? '' : 'border-0'">
+  <div class="footer-middle">
     <div class="container">
       <div class="row">
         <div class="col-sm-12 col-lg-6">
           <div class="widget widget-about">
-            <img th:src="@{~/assets/images/logo.png}" class="footer-logo"
-                 alt="Footer Logo" width="105" height="25">
+            <img src="/assets/images/logo.png" class="footer-logo"
+                 alt="Footer Logo" width="105" height="24">
             <p>Praesent dapibus, neque id cursus ucibus, tortor neque egestas augue, eu vulputate magna
               eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor,
               facilisis luctus, metus. </p>
@@ -78,7 +78,7 @@
                 <div class="col-sm-6 col-md-8">
                   <span class="widget-about-title">Phương thức thanh toán</span>
                   <figure class="footer-payments">
-                    <img th:src="@{~/assets/images/payments.png}" alt="Payment methods"
+                    <img src="/assets/images/payments.png" alt="Payment methods"
                          width="272" height="20">
                   </figure><!-- End .footer-payments -->
                 </div><!-- End .col-sm-6 -->

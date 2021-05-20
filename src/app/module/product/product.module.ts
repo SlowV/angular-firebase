@@ -7,10 +7,6 @@ import {CoreModule} from '../../core/core.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ProductFormComponent} from './component/product-form/product-form.component';
 import {CKEditorModule} from '@ckeditor/ckeditor5-angular';
-import {LazyLoadImageModule} from 'ng-lazyload-image';
-import {NzImageModule} from 'ng-zorro-antd/image';
-import {Ng2SearchPipeModule} from 'ng2-search-filter';
-import {ButtonsModule, WavesModule} from 'angular-bootstrap-md';
 
 
 @NgModule({

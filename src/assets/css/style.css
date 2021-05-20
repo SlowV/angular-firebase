@@ -15434,7 +15434,7 @@ small.form-text {
 .element-hover-img {
   width: 100px;
   height: 100px;
-  background-image: url(../images/elements.png);
+  /*background-image: url(../images/elements.png);*/
   background-repeat: no-repeat;
   transition: all 0.3s;
 }
