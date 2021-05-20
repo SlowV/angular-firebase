@@ -1,0 +1,158 @@
+<button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+<footer class="footer footer-2">
+  <div class="icon-boxes-container" th:classappend="${page} != 'home' ? 'd-none' : ''">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-6 col-lg-3">
+          <div class="icon-box icon-box-side">
+                                <span class="icon-box-icon">
+                                    <i class="icon-rocket"></i>
+                                </span>
+
+            <div class="icon-box-content">
+              <h3 class="icon-box-title">Free Shipping</h3><!-- End .icon-box-title -->
+              <p>Đơn hàng 1tr hoặc hơn</p>
+            </div><!-- End .icon-box-content -->
+          </div><!-- End .icon-box -->
+        </div><!-- End .col-sm-6 col-lg-3 -->
+
+        <div class="col-sm-6 col-lg-3">
+          <div class="icon-box icon-box-side">
+                                <span class="icon-box-icon">
+                                    <i class="icon-rotate-left"></i>
+                                </span>
+
+            <div class="icon-box-content">
+              <h3 class="icon-box-title">Đổi trả</h3><!-- End .icon-box-title -->
+              <p>Nếu sự cố xảy ra</p>
+            </div><!-- End .icon-box-content -->
+          </div><!-- End .icon-box -->
+        </div><!-- End .col-sm-6 col-lg-3 -->
+
+        <div class="col-sm-6 col-lg-3">
+          <div class="icon-box icon-box-side">
+                                <span class="icon-box-icon">
+                                    <i class="icon-info-circle"></i>
+                                </span>
+
+            <div class="icon-box-content">
+              <h3 class="icon-box-title">Giảm giá sập sàn</h3><!-- End .icon-box-title -->
+              <p>Khi mua số lượng sỉ</p>
+            </div><!-- End .icon-box-content -->
+          </div><!-- End .icon-box -->
+        </div><!-- End .col-sm-6 col-lg-3 -->
+
+        <div class="col-sm-6 col-lg-3">
+          <div class="icon-box icon-box-side">
+                                <span class="icon-box-icon">
+                                    <i class="icon-life-ring"></i>
+                                </span>
+
+            <div class="icon-box-content">
+              <h3 class="icon-box-title">Hỗ trợ</h3><!-- End .icon-box-title -->
+              <p>24/7 Dịch vụ tuyệt vời</p>
+            </div><!-- End .icon-box-content -->
+          </div><!-- End .icon-box -->
+        </div><!-- End .col-sm-6 col-lg-3 -->
+      </div><!-- End .row -->
+    </div><!-- End .container -->
+  </div><!-- End .icon-boxes-container -->
+
+  <div class="footer-middle" th:classappend="${page} != '' ? '' : 'border-0'">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12 col-lg-6">
+          <div class="widget widget-about">
+            <img th:src="@{~/assets/images/logo.png}" class="footer-logo"
+                 alt="Footer Logo" width="105" height="25">
+            <p>Praesent dapibus, neque id cursus ucibus, tortor neque egestas augue, eu vulputate magna
+              eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor,
+              facilisis luctus, metus. </p>
+
+            <div class="widget-about-info">
+              <div class="row">
+                <div class="col-sm-6 col-md-4">
+                  <span class="widget-about-title">Mọi câu hỏi, gọi 24/7</span>
+                  <a href="tel:0962127341">0962 127 341</a>
+                </div><!-- End .col-sm-6 -->
+                <div class="col-sm-6 col-md-8">
+                  <span class="widget-about-title">Phương thức thanh toán</span>
+                  <figure class="footer-payments">
+                    <img th:src="@{~/assets/images/payments.png}" alt="Payment methods"
+                         width="272" height="20">
+                  </figure><!-- End .footer-payments -->
+                </div><!-- End .col-sm-6 -->
+              </div><!-- End .row -->
+            </div><!-- End .widget-about-info -->
+          </div><!-- End .widget about-widget -->
+        </div><!-- End .col-sm-12 col-lg-3 -->
+
+        <div class="col-sm-4 col-lg-2">
+          <div class="widget">
+            <h4 class="widget-title">Thông tin</h4><!-- End .widget-title -->
+
+            <ul class="widget-list">
+              <li><a href="#">Gia Linh Nail</a></li>
+              <li><a href="#">Cách mua sắm</a></li>
+              <li><a href="#">FAQ</a></li>
+              <li><a href="#">Liên hệ</a></li>
+            </ul><!-- End .widget-list -->
+          </div><!-- End .widget -->
+        </div><!-- End .col-sm-4 col-lg-3 -->
+
+        <div class="col-sm-4 col-lg-2">
+          <div class="widget">
+            <h4 class="widget-title">Dịch vụ </h4><!-- End .widget-title -->
+
+            <ul class="widget-list">
+              <li><a href="#">Phương thức thanh toán</a></li>
+              <li><a href="#">Đảm bảo hoàn tiền</a></li>
+              <li><a href="#">Hoàn trả</a></li>
+              <li><a href="#">Vận chuyển</a></li>
+              <li><a href="#">Điều khoản</a></li>
+              <li><a href="#">Chính sách bảo mật</a></li>
+            </ul><!-- End .widget-list -->
+          </div><!-- End .widget -->
+        </div><!-- End .col-sm-4 col-lg-3 -->
+
+        <div class="col-sm-4 col-lg-2">
+          <div class="widget">
+            <h4 class="widget-title">Khách hàng</h4><!-- End .widget-title -->
+
+            <ul class="widget-list">
+              <li><a href="#">Đăng nhập</a></li>
+              <li><a href="#">Giỏ hàng</a></li>
+              <li><a href="#">Đơn hàng</a></li>
+              <li><a href="#">Giúp đỡ</a></li>
+            </ul><!-- End .widget-list -->
+          </div><!-- End .widget -->
+        </div><!-- End .col-sm-64 col-lg-3 -->
+      </div><!-- End .row -->
+    </div><!-- End .container -->
+  </div><!-- End .footer-middle -->
+
+  <div class="footer-bottom">
+    <div class="container">
+      <p class="footer-copyright">Copyright © 2021 <a href="/"><strong>GiaLinhNail</strong></a>. Đã đăng ký bản quyền</p>
+      <!-- End .footer-copyright -->
+      <ul class="footer-menu">
+        <li><a href="#">Điều khoản sử dụng</a></li>
+        <li><a href="#">Chính sách bảo mật</a></li>
+      </ul><!-- End .footer-menu -->
+
+      <div class="social-icons social-icons-color">
+        <span class="social-label">Mạng xã hội</span>
+        <a href="#" class="social-icon social-facebook" title="Facebook" target="_blank"><i
+          class="icon-facebook-f"></i></a>
+        <a href="#" class="social-icon social-twitter" title="Twitter" target="_blank"><i
+          class="icon-twitter"></i></a>
+        <a href="#" class="social-icon social-instagram" title="Instagram" target="_blank"><i
+          class="icon-instagram"></i></a>
+        <a href="#" class="social-icon social-youtube" title="Youtube" target="_blank"><i
+          class="icon-youtube"></i></a>
+        <a href="#" class="social-icon social-pinterest" title="Pinterest" target="_blank"><i
+          class="icon-pinterest"></i></a>
+      </div><!-- End .soial-icons -->
+    </div><!-- End .container -->
+  </div><!-- End .footer-bottom -->
+</footer><!-- End .footer -->

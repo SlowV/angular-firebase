@@ -3,6 +3,7 @@ import {AuthService} from './core/serivce/auth.service';
 import {User} from './core/model/user';
 import {LocalStorageUtil} from './core/utils/LocalStorageUtil';
 import {RoleEnum} from './core/utils/RoleEnum';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -14,9 +15,11 @@ export class AppComponent {
   isCollapsed = false;
   user: User;
   isVisible = false;
+  isAdminPage = false;
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private location: Location) {
     this.user = this.getUserLogin();
+    this.isAdminPage = location.path().includes('/admin/');
   }
 
   logout(): void {

@@ -25,6 +25,7 @@ import {NzImageModule} from 'ng-zorro-antd/image';
 import {AuthInterceptor} from './core/filter/auth.interceptor';
 import {DEFAULT_INTERPOLATION_CONFIG} from '@angular/compiler';
 import {MDBBootstrapModule} from 'angular-bootstrap-md';
+import {ShareModule} from './module/customer/share/share.module';
 
 registerLocaleData(en);
 
@@ -32,21 +33,22 @@ registerLocaleData(en);
   declarations: [
     AppComponent
   ],
-  imports: [
-    MDBBootstrapModule.forRoot(),
-    Ng2SearchPipeModule,
-    BrowserModule,
-    AppRoutingModule,
-    IconsProviderModule,
-    FormsModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig, 'cloud'),
-    AngularFirestoreModule,
-    AngularFireStorageModule,
-    AngularFireAuthModule,
-    CoreModule
-  ],
+    imports: [
+        MDBBootstrapModule.forRoot(),
+        Ng2SearchPipeModule,
+        BrowserModule,
+        AppRoutingModule,
+        IconsProviderModule,
+        FormsModule,
+        HttpClientModule,
+        BrowserAnimationsModule,
+        AngularFireModule.initializeApp(environment.firebaseConfig, 'cloud'),
+        AngularFirestoreModule,
+        AngularFireStorageModule,
+        AngularFireAuthModule,
+        CoreModule,
+        ShareModule
+    ],
   providers: [
     {provide: NZ_I18N, useValue: en_US},
     {provide: LAZYLOAD_IMAGE_HOOKS, useClass: ScrollHooks},
