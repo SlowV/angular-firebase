@@ -12160,7 +12160,7 @@ a:focus {
 
 .ratings:before,
 .ratings-val:before {
-  content: '\f318''\f318''\f318''\f318''\f318';
+  content: '\f318' '\f318' '\f318' '\f318' '\f318';
 }
 
 .ratings-val {
@@ -18091,7 +18091,7 @@ button:focus {
   margin-right: 1.8rem;
 }
 
-.menu-cat.justify-content-center li:lat-child {
+.menu-cat.justify-content-center li:last-child {
   margin-right: 1.8rem;
 }
 
@@ -22102,8 +22102,8 @@ button:focus {
   font-family: 'molla';
   src: url('../fonts/molla.eot?74273691');
   src: url('../fonts/molla.eot?74273691#iefix') format('embedded-opentype'), url('../fonts/molla.woff2?74273691') format('woff2'),
-    url('../fonts/molla.woff?74273691') format('woff'), url('../fonts/molla.ttf?74273691') format('truetype'),
-    url('../fonts/molla.svg?74273691#molla') format('svg');
+  url('../fonts/molla.woff?74273691') format('woff'), url('../fonts/molla.ttf?74273691') format('truetype'),
+  url('../fonts/molla.svg?74273691#molla') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -24923,7 +24923,7 @@ button:focus {
   top: 50%;
   margin-left: -40px;
   margin-top: -40px;
-  background: url('owl.video.play.png') no-repeat;
+  background: url('../images/owl.video.play.png') no-repeat;
   cursor: pointer;
   z-index: 1;
   -webkit-backface-visibility: hidden;
@@ -25275,7 +25275,7 @@ button:focus {
   background-size: contain;
   background-position: center center;
   background-repeat: no-repeat;
-  background-image: url('../../../images/nav-prev-shadow.png');
+  background-image: url('../images/nav-prev-shadow.png');
 }
 
 .owl-full .owl-nav .disabled {
@@ -25295,7 +25295,7 @@ button:focus {
 .owl-full .owl-nav .owl-next:before {
   left: auto;
   right: 100%;
-  background-image: url('../../../images/nav-next-shadow.png');
+  background-image: url('../images/nav-next-shadow.png');
 }
 
 .owl-full.carousel-with-shadow .owl-stage-outer {

@@ -43,9 +43,9 @@ export class ProductListComponent implements OnInit, AfterViewInit {
     this.loadProducts();
   }
 
-  loadProducts(search: string = null, date: { start: string, end: string } = null): void {
+  loadProducts(): void {
     this.loading = true;
-    this.productService.getAll(search, date).subscribe((products: Product[]) => {
+    this.productService.getAll().subscribe((products: Product[]) => {
       this.products = products;
       this.total = this.products.length;
       this.loading = false;
@@ -109,16 +109,5 @@ export class ProductListComponent implements OnInit, AfterViewInit {
   toDetail($event: Event, id: string): void {
     $event.stopPropagation();
     this.router.navigate(['admin/product', 'detail', id]).then();
-  }
-
-  onChangeSearch($event): void {
-    this.valSearch = $event.target.value;
-    if ($event.keyCode === 13) {
-      this.search();
-    }
-  }
-
-  private search(): void {
-    this.loadProducts(this.valSearch);
   }
 }

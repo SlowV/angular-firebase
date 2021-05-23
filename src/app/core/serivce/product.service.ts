@@ -26,20 +26,11 @@ export class ProductService {
     return this.afs.collection(this.path, ref => ref.orderBy(this.FIELD_CREATED_AT, 'desc'));
   }
 
-  getAll(val: string = null, date: { start: string, end: string } = null): Observable<Product[]> {
+  getAll(limit: number = null): Observable<Product[]> {
     return this.afs.collection<Product>(this.path, (ref: CollectionReference<DocumentData>) => {
-      const query: CollectionReference<DocumentData> | Query<Product> = ref;
-      if (val && val !== '') {
-        query
-          .orderBy(this.FIELD_NAME, 'desc')
-          .startAt(val)
-          .endAt(val + '\uf8ff');
-      }
-      if (date) {
-        query
-          .orderBy(this.FIELD_CREATED_AT)
-          .where(this.FIELD_CREATED_AT, '>=', date.start)
-          .where(this.FIELD_CREATED_AT, '<=', date.end);
+      let query: CollectionReference<DocumentData> | Query<DocumentData> = ref;
+      if (limit) {
+        query = query.limit(limit);
       }
       return query.orderBy(this.FIELD_CREATED_AT, 'desc');
     }).valueChanges({
