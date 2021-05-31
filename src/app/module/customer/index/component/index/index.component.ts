@@ -2,13 +2,14 @@ import {Component, OnInit} from '@angular/core';
 import {Category} from '../../../../../core/model/category';
 import {ProductService} from '../../../../../core/serivce/product.service';
 import {Product} from '../../../../../core/model/product';
+import {LoadScript} from '../../../../../core/utils/LoadScript';
 
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
   styleUrls: ['./index.component.scss']
 })
-export class IndexComponent implements OnInit {
+export class IndexComponent extends LoadScript implements OnInit {
   slideTemplate = [
     {
       id: '1',
@@ -71,41 +72,17 @@ export class IndexComponent implements OnInit {
   hotDealsProduct: Product[] = [];
 
   constructor(private productService: ProductService) {
-    this.loadAPI = new Promise((resolve) => {
-      this.loadScript();
-      resolve(true);
-    });
-  }
-
-  public loadScript(): void {
-    let isFound = false;
-    const scripts = document.getElementsByTagName('script');
-    // tslint:disable-next-line:prefer-for-of
-    for (let i = 0; i < scripts.length; ++i) {
-      if (scripts[i].getAttribute('src') != null && scripts[i].getAttribute('src').includes('loader')) {
-        isFound = true;
-      }
-    }
-
-    if (!isFound) {
-      const dynamicScripts = ['/assets/js/main.js'];
-
-      // tslint:disable-next-line:prefer-for-of
-      for (let i = 0; i < dynamicScripts.length; i++) {
-        const node = document.createElement('script');
-        node.src = dynamicScripts [i];
-        node.type = 'text/javascript';
-        node.async = false;
-        node.charset = 'utf-8';
-        document.getElementsByTagName('head')[0].appendChild(node);
-      }
-
-    }
+    super();
   }
 
   ngOnInit(): void {
     this.productService.getAll(15).subscribe(products => {
       this.hotDealsProduct = products;
+      this.loadAPI = new Promise((resolve) => {
+        super.loadScript('/assets/js/main.js');
+        super.loadScript('/assets/js/demo-13.js');
+        resolve(true);
+      });
     });
   }
 
